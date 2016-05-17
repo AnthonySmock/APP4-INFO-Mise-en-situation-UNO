@@ -1,0 +1,56 @@
+#container{width:99%;}
+#left{float:left;}
+#right{float:right;}
+#center{margin:0 auto;}
+
+#u1{
+height:100px;
+width:200px;
+margin:0 auto;
+margin-bottom: 10px;
+text-align: center;
+}
+
+#u2{
+height:100px;
+width:200px;
+text-align: center;
+}
+
+#u3{
+height:100px;
+width:200px;
+text-align: center;
+}
+
+#u4{
+float:right;
+height:15px;
+width:126px;
+height:172px;
+margin-top: 50px;
+text-align: center;
+}
+
+#u5{
+margin:0 auto;
+}
+#uno-main{
+        height: 100px;
+        width: 86%;
+        float: left;
+        margin-top: 50px;
+    }
+
+	#uno-game{
+        height: 180px;
+        width: 20%;
+        background: green;
+        border: 5px solid #000000;
+        margin: auto;
+        margin-top: 50px;
+    }
+    #my-cards{
+        bottom: 5px;
+        margin: auto;
+    }
