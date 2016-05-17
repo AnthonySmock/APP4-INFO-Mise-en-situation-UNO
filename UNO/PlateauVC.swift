@@ -13,10 +13,22 @@ let reuseIdentifier = "CellCard"
 
 class PlateauVC: UIViewController, UICollectionViewDelegate {
     
+    var detailItem :Dictionary<String,NSObject>? {
+        didSet {
+            // Update the view.
+            let cartes = detailItem!["cartes"] as! Array<Dictionary<String,NSObject>>
+            self.listeCartes = cartes
+            idtable = detailItem!["idTable"] as! Int
+            Tableid.text = "Table n°\(idtable)"
+        }
+    }
+    
     @IBOutlet var cartes : UICollectionView!
     @IBOutlet var carteCentre : UIImageView!
+    @IBOutlet var Tableid : UILabel!
     
-    var listeCartes = [["couleur" : "bleu" ,"chiffre" : 8],["couleur" : "jaune" ,"chiffre" : 1],["couleur" : "rouge" ,"chiffre" : 6],["couleur" : "vert" ,"chiffre" : 2],["couleur" : "bleu" ,"chiffre" : 8],["couleur" : "jaune" ,"chiffre" : 1],["couleur" : "rouge" ,"chiffre" : 6],["couleur" : "vert" ,"chiffre" : 2],["couleur" : "bleu" ,"chiffre" : 8],["couleur" : "jaune" ,"chiffre" : 1],["couleur" : "rouge" ,"chiffre" : 6],["couleur" : "vert" ,"chiffre" : 2]]
+    var listeCartes : Array<Dictionary<String,NSObject>> = []
+    var idtable = -1
     
     override func viewDidLoad() {
         super.viewDidLoad()

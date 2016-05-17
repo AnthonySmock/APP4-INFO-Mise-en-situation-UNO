@@ -7,11 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		CE3D205D1CE9F6070093BB0E /* TableCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D205C1CE9F6070093BB0E /* TableCell.swift */; };
-		CE3D205F1CE9F87C0093BB0E /* ListeTableVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D205E1CE9F87C0093BB0E /* ListeTableVC.swift */; };
-		CE3D20611CE9FD500093BB0E /* TableacceuilVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D20601CE9FD500093BB0E /* TableacceuilVC.swift */; };
-		CE3D20631CEA049A0093BB0E /* ListeTableVC2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D20621CEA049A0093BB0E /* ListeTableVC2.swift */; };
-		CE3D20651CEA04DD0093BB0E /* TableCell2.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE3D20641CEA04DD0093BB0E /* TableCell2.swift */; };
 		CE4D0EE91CE620F10089C152 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D0EE81CE620F10089C152 /* AppDelegate.swift */; };
 		CE4D0EEB1CE620F10089C152 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D0EEA1CE620F10089C152 /* ViewController.swift */; };
 		CE4D0EEE1CE620F10089C152 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE4D0EEC1CE620F10089C152 /* Main.storyboard */; };
@@ -25,6 +20,9 @@
 		CEF10D4A1CE75D940075DE1E /* imgpersodefault.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEF10D471CE75D940075DE1E /* imgpersodefault.jpg */; };
 		CEF10D4B1CE75D940075DE1E /* tapis jeu.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEF10D481CE75D940075DE1E /* tapis jeu.jpg */; };
 		CEF10D4C1CE75D940075DE1E /* trophee-de-la-coupe-silhouette_318-63600.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = CEF10D491CE75D940075DE1E /* trophee-de-la-coupe-silhouette_318-63600.jpeg */; };
+		CEF66CF21CEB016A00B44E5A /* TablesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF66CF11CEB016A00B44E5A /* TablesVC.swift */; };
+		CEF66CF41CEB15BC00B44E5A /* ListeTableMainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF66CF31CEB15BC00B44E5A /* ListeTableMainCell.swift */; };
+		CEF66CF61CEB17B600B44E5A /* ListeTablesSubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF66CF51CEB17B600B44E5A /* ListeTablesSubCell.swift */; };
 		CEFA1B9D1CE8CE3000BB952A /* ConstructCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFA1B9C1CE8CE3000BB952A /* ConstructCard.swift */; };
 		CEFA1BA01CE8CE9700BB952A /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEFA1B9E1CE8CE9700BB952A /* Photos.framework */; };
 		CEFA1BA11CE8CE9700BB952A /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEFA1B9F1CE8CE9700BB952A /* PhotosUI.framework */; };
@@ -55,11 +53,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		CE3D205C1CE9F6070093BB0E /* TableCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCell.swift; sourceTree = "<group>"; };
-		CE3D205E1CE9F87C0093BB0E /* ListeTableVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListeTableVC.swift; sourceTree = "<group>"; };
-		CE3D20601CE9FD500093BB0E /* TableacceuilVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableacceuilVC.swift; sourceTree = "<group>"; };
-		CE3D20621CEA049A0093BB0E /* ListeTableVC2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListeTableVC2.swift; sourceTree = "<group>"; };
-		CE3D20641CEA04DD0093BB0E /* TableCell2.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TableCell2.swift; sourceTree = "<group>"; };
 		CE4D0EE51CE620F10089C152 /* UNO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UNO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4D0EE81CE620F10089C152 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		CE4D0EEA1CE620F10089C152 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
@@ -80,6 +73,9 @@
 		CEF10D471CE75D940075DE1E /* imgpersodefault.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = imgpersodefault.jpg; path = images/imgpersodefault.jpg; sourceTree = "<group>"; };
 		CEF10D481CE75D940075DE1E /* tapis jeu.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "tapis jeu.jpg"; path = "images/tapis jeu.jpg"; sourceTree = "<group>"; };
 		CEF10D491CE75D940075DE1E /* trophee-de-la-coupe-silhouette_318-63600.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "trophee-de-la-coupe-silhouette_318-63600.jpeg"; path = "images/trophee-de-la-coupe-silhouette_318-63600.jpeg"; sourceTree = "<group>"; };
+		CEF66CF11CEB016A00B44E5A /* TablesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TablesVC.swift; sourceTree = "<group>"; };
+		CEF66CF31CEB15BC00B44E5A /* ListeTableMainCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListeTableMainCell.swift; sourceTree = "<group>"; };
+		CEF66CF51CEB17B600B44E5A /* ListeTablesSubCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListeTablesSubCell.swift; sourceTree = "<group>"; };
 		CEFA1B9C1CE8CE3000BB952A /* ConstructCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstructCard.swift; sourceTree = "<group>"; };
 		CEFA1B9E1CE8CE9700BB952A /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		CEFA1B9F1CE8CE9700BB952A /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
@@ -191,9 +187,7 @@
 				CE4D0EEA1CE620F10089C152 /* ViewController.swift */,
 				CE4D0EEC1CE620F10089C152 /* Main.storyboard */,
 				CEF10D441CE759900075DE1E /* PlateauVC.swift */,
-				CE3D205E1CE9F87C0093BB0E /* ListeTableVC.swift */,
-				CE3D20601CE9FD500093BB0E /* TableacceuilVC.swift */,
-				CE3D20621CEA049A0093BB0E /* ListeTableVC2.swift */,
+				CEF66CF11CEB016A00B44E5A /* TablesVC.swift */,
 			);
 			name = View;
 			sourceTree = "<group>";
@@ -218,8 +212,8 @@
 			isa = PBXGroup;
 			children = (
 				CEFA1BAD1CE8D8F300BB952A /* Cardcell.swift */,
-				CE3D205C1CE9F6070093BB0E /* TableCell.swift */,
-				CE3D20641CEA04DD0093BB0E /* TableCell2.swift */,
+				CEF66CF31CEB15BC00B44E5A /* ListeTableMainCell.swift */,
+				CEF66CF51CEB17B600B44E5A /* ListeTablesSubCell.swift */,
 			);
 			name = Cell;
 			sourceTree = "<group>";
@@ -364,18 +358,16 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE3D205F1CE9F87C0093BB0E /* ListeTableVC.swift in Sources */,
-				CE3D20651CEA04DD0093BB0E /* TableCell2.swift in Sources */,
 				CE4D0EEB1CE620F10089C152 /* ViewController.swift in Sources */,
-				CE3D20611CE9FD500093BB0E /* TableacceuilVC.swift in Sources */,
 				CEFA1BAE1CE8D8F300BB952A /* Cardcell.swift in Sources */,
-				CE3D205D1CE9F6070093BB0E /* TableCell.swift in Sources */,
 				CEF10D421CE759380075DE1E /* Toucan.swift in Sources */,
+				CEF66CF61CEB17B600B44E5A /* ListeTablesSubCell.swift in Sources */,
+				CEF66CF41CEB15BC00B44E5A /* ListeTableMainCell.swift in Sources */,
 				CEF10D451CE759900075DE1E /* PlateauVC.swift in Sources */,
 				CEF10D411CE759380075DE1E /* SCLAlertView.swift in Sources */,
+				CEF66CF21CEB016A00B44E5A /* TablesVC.swift in Sources */,
 				CE4D0EE91CE620F10089C152 /* AppDelegate.swift in Sources */,
 				CEFA1B9D1CE8CE3000BB952A /* ConstructCard.swift in Sources */,
-				CE3D20631CEA049A0093BB0E /* ListeTableVC2.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
