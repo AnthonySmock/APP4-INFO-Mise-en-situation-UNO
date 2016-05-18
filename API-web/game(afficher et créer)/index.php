@@ -108,8 +108,8 @@ function postGame(Request $request, Response $response)
 		$gameName = $dataReceived['gameName'];
 		$gamePassword = $dataReceived['gamePassword'];
 		$maxPlayer = $dataReceived['maxPlayer'];
-		$finish = 0;
-		$isAdmin = 1;
+		$finish = false;
+		$isAdmin = true;
 		
 		// le pid et le gameName sont obligatoires
 		if ( isExist($pid) && isExist($gameName) )
