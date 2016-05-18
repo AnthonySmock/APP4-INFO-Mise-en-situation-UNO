@@ -60,8 +60,11 @@ function getGame(Request $request, Response $response)
 	else
 	{
 	
+		$array = array();
+		$cpt = 0;
 		while ($data = $exe->fetch() )
 		{
+			
 			// test si pour la partie il existe un mdp
 			if ( $data['gamePassword'] == "null")
 			{
@@ -81,10 +84,12 @@ function getGame(Request $request, Response $response)
 								  "isPasswordSet" => true,
 				];		  
 			}
-			$db = null;
-			return $response->withJson($dataToEncode);
-		
+			$array[$cpt] = $dataToEncode;
+			$cpt = $cpt +1;
+			
 		}
+		$db = null;
+		return $response->withJson($array);
 	}
 
 }
