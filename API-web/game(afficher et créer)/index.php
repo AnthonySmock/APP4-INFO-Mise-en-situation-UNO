@@ -23,6 +23,11 @@ $app->post('/game', function (Request $request, Response $response) {
 	postGame($request, $response);
 });
 
+// requete permettant d'entrer dans une partie
+$app->post('/play', function (Request $request, Response $response) {
+	enterGame($request, $response);
+});
+
 $app->run();
 
 function getPlayers()
@@ -55,7 +60,7 @@ function getGame(Request $request, Response $response)
 	if ($exe == false)
 	{
 		$erreur['info'] = "erreur requete base de données";
-		return $response->withJson($erreur)->withStatus(500);
+		return $response->withJson($erreur)->withStatus(400);
 	}
 	else
 	{
@@ -104,7 +109,7 @@ function postGame(Request $request, Response $response)
 		
 		$erreur['info'] = "aucune donnée reçue";
 		
-		return $response->withJson($erreur)->withStatus(500);
+		return $response->withJson($erreur)->withStatus(400);
 	}
 	else
 	{
@@ -113,8 +118,8 @@ function postGame(Request $request, Response $response)
 		$gameName = $dataReceived['gameName'];
 		$gamePassword = $dataReceived['gamePassword'];
 		$maxPlayer = $dataReceived['maxPlayer'];
-		$finish = false;
-		$isAdmin = true;
+		$finish = 0;
+		$isAdmin = 1;
 		
 		// le pid et le gameName sont obligatoires
 		if ( isExist($pid) && isExist($gameName) )
@@ -140,7 +145,7 @@ function postGame(Request $request, Response $response)
 				{
 					echo '{"error":{"text":'. $e->getMessage() .'}}';
 					$erreur['info'] = "erreur d'insertion";
-					return $response->withJson($erreur)->withStatus(500);
+					return $response->withJson($erreur)->withStatus(400);
 				}
 			}
 			else
@@ -160,7 +165,7 @@ function postGame(Request $request, Response $response)
 				{
 					echo '{"error":{"text":'. $e->getMessage() .'}}';
 					$erreur['info'] = "erreur d'insertion";
-					return $response->withJson($erreur)->withStatus(500);
+					return $response->withJson($erreur)->withStatus(400);
 				}
 			}
 			$lastInserted = $db->lastInsertId();
@@ -179,9 +184,10 @@ function postGame(Request $request, Response $response)
 			{
 				echo '{"error":{"text":'. $e->getMessage() .'}}';
 				$erreur['info'] = "erreur d'insertion";
-				return $response->withJson($erreur)->withStatus(500);
+				return $response->withJson($erreur)->withStatus(400);
 			}
 		} 
+		echo "super";
 	}
 	
 }
@@ -198,6 +204,15 @@ function isExist ($var)
 		return true;
 	}
 }
+
+function enterGame($request, $response)
+{
+	
+
+
+
+}
+
 
 
 
