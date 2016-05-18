@@ -108,7 +108,6 @@ function postGame(Request $request, Response $response)
 	{
 		
 		$erreur['info'] = "aucune donnée reçue";
-		
 		return $response->withJson($erreur)->withStatus(400);
 	}
 	else
@@ -124,70 +123,95 @@ function postGame(Request $request, Response $response)
 		// le pid et le gameName sont obligatoires
 		if ( isExist($pid) && isExist($gameName) )
 		{
-			// insertion dans la table game
-			// test s'il y a un mot de passe ou non
-			if (isExist($gamePassword))
+			
+			// test que le pid existe 
+			// vérification de l'existence du pid
+			// cas où il n'y a pas de mdp
+			// vérification de l'existence du gid
+			$sql =  "select pid
+				from player
+				where pid = '$pid'  ";
+			$exe = $db->query($sql);
+			if ( $exe->rowCount() == 1)
 			{
-				// si oui: insertion d'un mdp également
-				$sql = "insert into game (gameName, gamePassword, isTerminated)
-						values (:name, :pwd, :bool)";
+				// insertion dans la table game
+				// test s'il y a un mot de passe ou non
+				if (isExist($gamePassword))
+				{
+					// si oui: insertion d'un mdp également
+					$sql = "insert into game (gameName, gamePassword, isTerminated)
+							values (:name, :pwd, :bool)";
+					try {
+
+							$req = $db->prepare($sql);
+							$req->bindParam("name", $gameName);
+							$req->bindParam("pwd", $gamePassword);
+							$req->bindParam("bool", $finish);
+							$req->execute();
+							
+						
+		
+					} catch (PDOException $e)
+					{
+						echo '{"error":{"text":'. $e->getMessage() .'}}';
+						$erreur['info'] = "erreur d'insertion";
+						return $response->withJson($erreur)->withStatus(400);
+					}
+				}
+				else
+				{
+					// si oui: insertion d'un mdp également
+					$sql = "insert into game (gameName, isTerminated)
+							values (:name, :bool)";
+					try {
+
+							$req = $db->prepare($sql);
+							$req->bindParam("name", $gameName);
+							$req->bindParam("bool", $finish);
+							$req->execute();
+							
+						
+					} catch (PDOException $e)
+					{
+						echo '{"error":{"text":'. $e->getMessage() .'}}';
+						$erreur['info'] = "erreur d'insertion";
+						return $response->withJson($erreur)->withStatus(400);
+					}
+				}
+				$lastInserted = $db->lastInsertId();
+				// insertion dans la table playersingame
+				$sql = "insert into playersingame (Game_gid, isAdmin, Player_pid)
+						values (:gid, :isAdmin, :pid)";
 				try {
 
 						$req = $db->prepare($sql);
-						$req->bindParam("name", $gameName);
-						$req->bindParam("pwd", $gamePassword);
-						$req->bindParam("bool", $finish);
-						$req->execute();
-						
+						$req->bindParam("gid", $lastInserted);
+						$req->bindParam("isAdmin", $isAdmin);
+						$req->bindParam("pid", $pid);
+						$req->execute();	
 					
-	
 				} catch (PDOException $e)
 				{
 					echo '{"error":{"text":'. $e->getMessage() .'}}';
 					$erreur['info'] = "erreur d'insertion";
 					return $response->withJson($erreur)->withStatus(400);
 				}
+				echo "super";
 			}
 			else
 			{
-				// si oui: insertion d'un mdp également
-				$sql = "insert into game (gameName, isTerminated)
-						values (:name, :bool)";
-				try {
-
-						$req = $db->prepare($sql);
-						$req->bindParam("name", $gameName);
-						$req->bindParam("bool", $finish);
-						$req->execute();
-						
-					
-				} catch (PDOException $e)
-				{
-					echo '{"error":{"text":'. $e->getMessage() .'}}';
-					$erreur['info'] = "erreur d'insertion";
-					return $response->withJson($erreur)->withStatus(400);
-				}
-			}
-			$lastInserted = $db->lastInsertId();
-			// insertion dans la table playersingame
-			$sql = "insert into playersingame (Game_gid, isAdmin, Player_pid)
-				    values (:gid, :isAdmin, :pid)";
-			try {
-
-					$req = $db->prepare($sql);
-					$req->bindParam("gid", $lastInserted);
-					$req->bindParam("isAdmin", $isAdmin);
-					$req->bindParam("pid", $pid);
-					$req->execute();	
-				
-			} catch (PDOException $e)
-			{
-				echo '{"error":{"text":'. $e->getMessage() .'}}';
-				$erreur['info'] = "erreur d'insertion";
+				$erreur['info'] = "erreur avec le pid: il n'existe pas";
 				return $response->withJson($erreur)->withStatus(400);
+			
 			}
 		} 
-		echo "super";
+		else
+		{
+			$erreur['info'] = "erreur avec les paramètres json";
+			return $response->withJson($erreur)->withStatus(400);
+		
+		}
+		
 	}
 	
 }
@@ -207,7 +231,150 @@ function isExist ($var)
 
 function enterGame($request, $response)
 {
+	$db = getDB();
+	$dataReceived = json_decode($request->getBody(), true);
+	// valeur n'a pas pu être décodée
+	if ($dataReceived == null)
+	{
+		$erreur['info'] = "aucune donnée reçue";
+		return $response->withJson($erreur)->withStatus(400);
+	}
+	else
+	{
+		$pid = $dataReceived['pid'];
+		$gid = $dataReceived['gid'];
+		$pwd = $dataReceived['password'];
+		
+		if ( isExist($pid) && isExist($gid) )
+		{
+			// vérification de l'existence du pid
+			// cas où il n'y a pas de mdp
+			// vérification de l'existence du gid
+			$sql =  "select pid
+				from player
+				where pid = '$pid'  ";
+			$exe = $db->query($sql);
+			
+			// cas où il n'y a pas de mdp
+			// vérification de l'existence du gid
+			$sql2 =  "select gid
+				from game
+				where gid = '$gid'  ";
+			$exe2 = $db->query($sql2); 
+			
+ 			if ( $exe->rowCount() == 1 && $exe2->rowCount() == 1)
+			{
+			
+				//test s'il y a un mdp
+				if ( isExist($pwd) )
+				{
+					// vérification que ce mdp correspond au gid passé en paramètres
+					$sql =  "select gid
+						from game
+						where gamePassword = '$pwd'
+						and gid = '$gid'  ";
+					$exe = $db->query($sql);
+					
+					// teste s'il y a un résultat ou non
+					if ($exe->rowCount() == 1)
+					{
+						// tester s'il y a moins de 4 joueurs
+						$sql =  "select g.gid, count(p.Player_pid) as nbJoueurs
+								from game g, playersingame p
+								where g.gid = p.Game_gid
+								and isTerminated = false
+								and gid = '$gid'
+								group by (g.gid)";
+						$exe = $db->query($sql);
+						$data = $exe->fetch();
+						// si oui
+						if ( $data['nbJoueurs'] < 4)
+						{
+							// on fait l'insertion
+							echo "on doit faire l'insertion";
+							$sql = "insert playersingame (Game_gid, Player_pid)
+									values (:gid, :pid)
+								";
+							try {
+
+									$req = $db->prepare($sql);
+									$req->bindParam("gid", $gid);
+									$req->bindParam("pid", $pid);
+									$req->execute();
+							} catch (PDOException $e)
+							{
+								echo '{"error":{"text":'. $e->getMessage() .'}}';
+								$erreur['info'] = "erreur d'insertion";
+								return $response->withJson($erreur)->withStatus(400);
+							}
+						}
+						else
+						{
+							$erreur['info'] = "erreur, il y a déjà 4 joueurs";
+							return $response->withJson($erreur)->withStatus(400);
+						
+						}
+					}
+					else
+					{
+						$erreur['info'] = "erreur, le mot de passe est erroné";
+						return $response->withJson($erreur)->withStatus(400);
+					
+					}
+				}
+				else 
+				{	
+					// tester s'il y a moins de 4 joueurs
+					$sql =  "select g.gid, count(p.Player_pid) as nbJoueurs
+							from game g, playersingame p
+							where g.gid = p.Game_gid
+							and isTerminated = false
+							and gid = '$gid'
+							group by (g.gid)";
+					$exe = $db->query($sql);
+					$data = $exe->fetch();
+					// si oui
+					if ( $data['nbJoueurs'] < 4)
+					{
+						// on fait l'insertion
+						echo "on doit faire l'insertion";
+						$sql = "insert playersingame (Game_gid, Player_pid)
+								values (:gid, :pid)
+							";
+						try {
+
+								$req = $db->prepare($sql);
+								$req->bindParam("gid", $gid);
+								$req->bindParam("pid", $pid);
+								$req->execute();
+						} catch (PDOException $e)
+						{
+							echo '{"error":{"text":'. $e->getMessage() .'}}';
+							$erreur['info'] = "erreur d'insertion";
+							return $response->withJson($erreur)->withStatus(400);
+						}
+					}
+					else
+					{
+						$erreur['info'] = "erreur, il y a déjà 4 joueurs";
+						return $response->withJson($erreur)->withStatus(400);
+					
+					}
+				}
+			}
+			else
+			{
+				$erreur['info'] = "erreur  avec le pid ou le gid";
+				return $response->withJson($erreur)->withStatus(400);
+			}
+		}
+		else
+		{
+			$erreur['info'] = "erreur avec les paramètres json";
+			return $response->withJson($erreur)->withStatus(400);
+		}
 	
+	}
 
 
 
