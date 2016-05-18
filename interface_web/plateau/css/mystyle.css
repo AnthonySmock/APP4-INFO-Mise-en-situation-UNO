@@ -9,18 +9,21 @@ width:200px;
 margin:0 auto;
 margin-bottom: 10px;
 text-align: center;
+font-size: 1.3em;
 }
 
 #u2{
 height:100px;
 width:200px;
 text-align: center;
+font-size: 1.3em;
 }
 
 #u3{
 height:100px;
 width:220px;
 text-align: center;
+font-size: 1.3em;
 }
 
 #u4{
@@ -30,16 +33,19 @@ width:126px;
 height:172px;
 margin-top: 50px;
 text-align: center;
+font-size: 1.1em;
 }
 
-#u5{
+.caption{
 margin:0 auto;
+font-size: 1.1em;
 }
 #uno-main{
-        height: 100px;
-        width: 86%;
+        height: 300px;
+        width: 89%;
         float: left;
         margin-top: 50px;
+        overflow:scroll;
     }
 
 	#uno-game{
