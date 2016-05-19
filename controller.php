@@ -60,7 +60,7 @@ $app->post('/api/state', function ($request, $response) {
 	return $response->withJson($data);
 });
 
-$app->post('/api/action', function ($request, $response) {
+/*$app->post('/api/action', function ($request, $response) {
 	$requestData = json_decode($request->getBody(), true);
 	if(!(isset($requestData['action'])))
 		return $response->withStatus(400)->write($request->getBody());
@@ -74,8 +74,9 @@ $app->post('/api/action', function ($request, $response) {
 		return $response->withJson($carte);
 	}
 	return $response;
-});
+});*/
 
+require('action/controller.php');
 require('game/controller.php');
 require('subscribe/controller.php');
     
