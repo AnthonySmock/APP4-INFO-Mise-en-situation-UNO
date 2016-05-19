@@ -138,10 +138,6 @@ function incrementTurn($gid)
   $req->execute();
 }
 
-$app->get("/api/turn", function($request, $response) {
-  return $response->withJson(getPlayersTurn(36));
-});
-
 function getPlayersTurn($gid)
 {
 
@@ -164,6 +160,20 @@ function getPlayersTurn($gid)
           }
 
           return $playersTurn;
+
+}
+
+$app->get("/api/turn", function($request, $response) {
+  return $response->withJson(array("istrun" => isPlayerTurn(17,36)));
+});
+
+function isPlayerTurn($pid, $gid)
+{
+  $playersTurn = getPlayersTurn($gid);
+  if(getCurrentTurn($gid) == $playersTurn[$pid])
+    return true;
+  else
+    return false;
 
 }
 
