@@ -1,15 +1,17 @@
 <?php
-// requete permettant de récupérer les cartes d'un joueur
-$app->get('/api/play', function ($request, $response) {
-	getCards();
-});
+use \Psr\Http\Message\ServerRequestInterface as Request;
+use \Psr\Http\Message\ResponseInterface as Response;
+
+require 'vendor/autoload.php';
+
+$app = new Slim\App();
 
 // requete permettant d'afficher les parties en cours 
 $app->get('/api/game', function ($request, $response) {
 	getGame($request, $response);
 });
 
-// requete permettant d'afficher les parties en cours 
+// requete permettant de créer une partie
 $app->post('/api/game', function ($request, $response) {
 	postGame($request, $response);
 });
@@ -18,7 +20,6 @@ $app->post('/api/game', function ($request, $response) {
 $app->post('/api/play', function ($request, $response) {
 	enterGame($request, $response);
 });
-
 
 function getGame($request, $response)
 {
@@ -44,11 +45,12 @@ function getGame($request, $response)
 	
 		$array = array();
 		$cpt = 0;
+		
 		while ($data = $exe->fetch() )
 		{
 			
 			// test si pour la partie il existe un mdp
-			if ( $data['gamePassword'] == "null")
+			if ( !isExist($data['gamePassword']))
 			{
 				$dataToEncode = [ "gid" => $data['gid'],
 								  "gameName" => $data['gameName'],
@@ -74,7 +76,6 @@ function getGame($request, $response)
 		return $response->withJson($array);
 	}
 
-   
 }
 
 function postGame($request, $response)
@@ -97,6 +98,7 @@ function postGame($request, $response)
 		$maxPlayer = $dataReceived['maxPlayer'];
 		$finish = 0;
 		$isAdmin = 1;
+		$isWinner= 0;
 		
 		// le pid et le gameName sont obligatoires
 		if ( isExist($pid) && isExist($gameName) )
@@ -158,14 +160,15 @@ function postGame($request, $response)
 				}
 				$lastInserted = $db->lastInsertId();
 				// insertion dans la table playersingame
-				$sql = "insert into playersingame (Game_gid, isAdmin, Player_pid)
-						values (:gid, :isAdmin, :pid)";
+				$sql = "insert into playersingame (Game_gid, isAdmin, Player_pid, isWinner)
+						values (:gid, :isAdmin, :pid, :isWinner)";
 				try {
 
 						$req = $db->prepare($sql);
 						$req->bindParam("gid", $lastInserted);
 						$req->bindParam("isAdmin", $isAdmin);
 						$req->bindParam("pid", $pid);
+						$req->bindParam("isWinner", $isWinner);
 						$req->execute();	
 					
 				} catch (PDOException $e)
@@ -174,7 +177,106 @@ function postGame($request, $response)
 					$erreur['info'] = "erreur d'insertion";
 					return $response->withJson($erreur)->withStatus(400);
 				}
-				echo "super";
+				
+				// création des cartes de la partie
+				$sql =  "
+						select cid from 
+						carte 
+				";
+				$exe = $db->query($sql);
+				
+				$gid = $lastInserted;
+				if ($exe == false)
+				{
+					$erreur['info'] = "erreur il n'y a pas de carte dans la base de données";
+					return $response->withJson($erreur)->withStatus(400);
+				}
+				else
+				{
+					while ($data = $exe->fetch() )
+					{
+						$cid = $data['cid'];
+						// insertion du cid dans la table main:
+						// on insert toutes les cartes dans la table main
+						// si oui: insertion d'un mdp également
+						$sql = "insert into main (carte_id, game_id)
+								values (:cid, :gid)";
+						try {
+
+								$req = $db->prepare($sql);
+								$req->bindParam("cid", $cid);
+								$req->bindParam("gid", $gid);
+								$req->execute();
+								
+						} catch (PDOException $e)
+						{
+							echo '{"error":{"text":'. $e->getMessage() .'}}';
+							$erreur['info'] = "erreur d'insertion";
+							return $response->withJson($erreur)->withStatus(400);
+						}
+					}
+				}
+				// distribution des cartes au créateur de la partie
+				$sql =  "
+						select cid, col.color_name, n.number_name
+						from carte c, main m, number n, color col
+						where col.color_id = c.color_id
+						and c.number_id = n.number_id
+						and c.cid = m.carte_id
+						and m.game_id = '$gid'
+						and player_id is  null	
+						order by rand()
+						limit 3
+				";
+				$exe = $db->query($sql);
+				if ($exe == false)
+				{
+					$erreur['info'] = "erreur il n'y a plus de cartes disponibles, elles ont toutes été affectées";
+					return $response->withJson($erreur)->withStatus(400);
+				}
+				else
+				{
+					$array = array();
+					$cpt = 0;
+					while ($data = $exe->fetch() )
+					{
+						$carteToAffect = $data['cid'];
+						$colorName = $data['color_name'];
+						$numberName = $data['number_name'];
+						// préparation des données json à envoyer
+						$dataToSend = [ "cid" => $carteToAffect,
+										"color" => $colorName,
+										"number" => $numberName,
+									  ];
+						$array[$cpt] = $dataToSend;
+						$cpt = $cpt + 1;
+						
+						// ajout des cartes au créateur
+						$sql = "update main
+								set player_id = :pid
+								where carte_id = :cid
+								and game_id = :gid";
+						try {
+								$req = $db->prepare($sql);
+								$req->bindParam("pid", $pid);
+								$req->bindParam("cid", $carteToAffect);
+								$req->bindParam("gid", $gid);
+								$req->execute();
+								
+						} catch (PDOException $e)
+						{
+							echo '{"error":{"text":'. $e->getMessage() .'}}';
+							$erreur['info'] = "erreur d'insertion";
+							return $response->withJson($erreur)->withStatus(400);
+						}
+				
+					}
+					$json = [ "gid" => $gid,
+							  "yourCards" => $array,
+							];
+					return $response->withJson($json);
+				}
+				
 			}
 			else
 			{
@@ -357,76 +459,4 @@ function enterGame($request, $response)
 
 
 }
-
-
-
-
-/*
-Requetes d'insertion dans la table game:
-
-
-insert into game (gameName, gamePassword, isTerminated)
-values ('partie1', 'toto', false);
-
-insert into game (gameName, gamePassword, isTerminated)
-values ('partie2', 'test', false);
-
-insert into game (gameName, gamePassword, isTerminated)
-values ('partie3', 'tata', false);
-
-insert into game (gameName, gamePassword, isTerminated)
-values ('partie4', 'titi', true);
-
-insert into game (gameName, gamePassword, isTerminated)
-values ('battle', 'toto', false);
-
-insert into game (gameName, gamePassword, isTerminated)
-values ('uno', 'test', true);
-
-insert into game (gameName, gamePassword, isTerminated)
-values ('partie34', 'tata', true);
-
-insert into game (gameName, gamePassword, isTerminated)
-values ('partie45', 'titi', true);
-
-insert into player (username, password)
-values ('zorro', 'azer');
-
-insert into player (username, password)
-values ('zarra', 'azer');
-
-insert into player (username, password)
-values ('titi', 'azer');
-
-insert into player (username, password)
-values ('grosminet', 'azer');
-
-insert into player (username, password)
-values ('bugs bunny', 'azer');
-
-insert into player (username, password)
-values ('daffy', 'azer');
-
-// partie 1: pleine
-insert into playersingame 
-values (1, 1);
-
-insert into playersingame 
-values (1, 2);
-
-insert into playersingame 
-values (1, 3);
-
-insert into playersingame 
-values (1, 4);
-
-// partie 2 non pleine
-insert into playersingame 
-values (2, 5);
-
-insert into playersingame 
-values (2, 6);
-
-
-*/
 ?>
