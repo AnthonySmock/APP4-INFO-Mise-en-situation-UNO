@@ -34,7 +34,7 @@ $app->post('/api/subscribe', function ($request, $response, $args) use ($app)
 	$player_username = $data['username'];
 	$player_password = $data['password'];
 	
-	try
+	/*try
 	{
 		// On se connecte à MySQL
 		$bdd = new PDO('mysql:host=localhost;dbname=Uno_game;charset=utf8', 'root', '');
@@ -43,7 +43,9 @@ $app->post('/api/subscribe', function ($request, $response, $args) use ($app)
 	{
 		// En cas d'erreur, on affiche un message et on arrête tout
 			die('Erreur : '.$e->getMessage());
-	}
+	}*/
+     $bdd = getDB();
+     
 
 	// Si tout va bien, on peut continuer
 	// On récupère tout le contenu de la table jeux_video
@@ -59,7 +61,7 @@ $app->post('/api/subscribe', function ($request, $response, $args) use ($app)
 		}
 		else{
 			echo "\n insert...";
-			if ($bdd->query("INSERT INTO Player (pid, username, password) VALUES (11,'$player_username','$player_password')")) {
+			if ($bdd->query("INSERT INTO Player (username, password) VALUES ('$player_username','$player_password')")) {
 				echo "New record created successfully";
 			} else {
 				echo "Error: ";
@@ -78,13 +80,13 @@ $app->post('/api/subscribe', function ($request, $response, $args) use ($app)
 
 
 
-$app->post('/api/connexion', function ($request, $response, $args) use ($app)
+$app->post('/api/connection', function ($request, $response, $args) use ($app)
  {
     $data = json_decode($request->getBody(), true);
 	$player_username = $data['username'];
 	$player_password = $data['password'];
 	
-	try
+	/*try
 	{
 		// On se connecte à MySQL
 		$bdd = new PDO('mysql:host=localhost;dbname=Uno_game;charset=utf8', 'root', '');
@@ -93,7 +95,9 @@ $app->post('/api/connexion', function ($request, $response, $args) use ($app)
 	{
 		// En cas d'erreur, on affiche un message et on arrête tout
 			die('Erreur : '.$e->getMessage());
-	}
+	}*/
+     
+     $bdd = getDB();
 
 	// Si tout va bien, on peut continuer
 
