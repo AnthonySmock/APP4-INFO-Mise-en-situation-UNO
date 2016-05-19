@@ -61,7 +61,6 @@ function drawCard($requestData, $response)
 
     $cid = $data['cid'];
 
-
     $sql = "update main
     set player_id = :pid
     where carte_id = :cid
@@ -79,11 +78,6 @@ function drawCard($requestData, $response)
 }
 
 function playCard($requestData, $response) {
-
-    /*
-    "cid": "159",
-  "color": "red",
-  "number": 5*/
 
     $cid = $requestData['cid'];
     $gid = $requestData['gid'];
@@ -107,6 +101,12 @@ function playCard($requestData, $response) {
     if(!($data = $exe->fetch()))
        return $response->withJson(array("info" => "you don't have this card"))->withStatus(400);
 
+    $lastPlayedCard = getLastPlayedCard($gid);
+    $playerCard = getInfoOnCard($cid);
+
+    if(!($lastPlayedCard['color_name'] == $playerCard['color_name'] || $lastPlayedCard['number_name'] == $playerCard['color_number']))
+      return $response->withJson(array("info" => "you can't play this card"))->withStatus(400);
+
     $sql = "update main
     set isPlayed = 1
     where carte_id = :cid
@@ -129,6 +129,38 @@ function playCard($requestData, $response) {
     incrementTurn($gid);
 
     return $response;
+}
+
+
+function getInfoOnCard($cid)
+{
+  $bdd = getDB();
+
+  $sql = "SELECT c.cid, co.color_name, n.number_name
+  FROM carte c, color co, number n
+  WHERE c.cid = '$cid'
+  AND c.color_id = co.color_id
+  AND c.number_id = n.number_id";
+
+  $exe = $bdd->query($sql);
+
+  return $data = $exe->fetch();
+}
+
+function getLastPlayedCard($gid)
+{
+  $bdd = getDB();
+
+  $sql = "SELECT c.cid, co.color_name, n.number_name
+  FROM game g, carte c, color co, number n
+  WHERE g.gid = '$gid'
+  AND c.cid = g.lastPlayedCard
+  AND c.color_id = co.color_id
+  AND c.number_id = n.number_id";
+
+  $exe = $bdd->query($sql);
+
+  return $data = $exe->fetch();
 }
 
 function incrementTurn($gid)
