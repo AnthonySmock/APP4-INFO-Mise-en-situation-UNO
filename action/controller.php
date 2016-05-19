@@ -137,4 +137,24 @@ function incrementTurn($gid)
   $req->bindParam("gid", $gid);
   $req->execute();
 }
+
+$app->get("/api/turn", function($request, $response) {
+  return $response->write(getCurrentTurn(36));
+});
+
+function getCurrentTurn($gid)
+{
+
+  $bdd = getDB();
+
+  $sql = "select turn
+  from game g
+  where g.gid = '$gid'";
+
+  $exe = $bdd->query($sql);
+
+  $data = $exe->fetch();
+
+  return $data['turn'] % 4 + 1;
+}
 ?>
