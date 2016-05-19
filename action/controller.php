@@ -21,13 +21,14 @@ $app->post('/api/action', function ($request, $response) {
             return $response->withJson(array("info" => "missing field cid for action play"))->withStatus(400);
         if(!is_int($requestData['cid']))
             return $response->withJson(array("info" => "cid must be an integer"))->withStatus(400);
-        return $response->withJson(playCard($requestData));
+        return playCard($requestData, $response);
     }
 });
     
 function drawCard($requestData)
 {
     $gid = $requestData['gid'];
+    $pid = $requestData['pid'];
     $bdd = getDB();
     $sql = "select c.cid, co.color_name, n.number_name
     from carte c, main m, color co, number n
@@ -41,53 +42,82 @@ function drawCard($requestData)
 					
   
     $exe = $bdd->query($sql);
-    if ($exe == false)
+    if (!($data = $exe->fetch()))
     {
         //plus de cartes : regénérer la pioche avec les cartes jouées, sauf la première
+        return array("info" => "plus de carte");
     }
     else
     {
-        $data = $exe->fetch();
         //$pickedCard = array_rand($data, 1);
         $card['cid'] = $data['cid'];
         $card['color'] = $data['color_name'];
         $card['number'] = convertNumberName($data['number_name']);
     }
+    
+    $cid = $data['cid'];
+
+    
+    $sql = "update main
+    set player_id = :pid
+    where carte_id = :cid
+    and game_id = :gid";
+	
+    $req = $bdd->prepare($sql);
+    $req->bindParam("pid", $pid);
+    $req->bindParam("cid", $cid);
+    $req->bindParam("gid", $gid);
+    $req->execute();
+    
     return $card;
 }
 
-
-function convertNumberName($numberName) {
-    switch($data['number_name']) {
-            case "un":
-            return 1;
-            break;
-            case "deux":
-            return 2;
-            break;
-            case "trois":
-            return 3;
-            break;
-            case "quatre":
-            return 4;
-            break;
-            case "cinq":
-            return 5;
-            break;
-            case "six":
-            return 6;
-            break;
-            case "sept":
-            return 7;
-            break;
-            case "huit":
-            return 8;
-            break;
-            case "neuf":
-            return 9;
-            break;
-        }
+function playCard($requestData, $response) {
     
-    return 1;
+    /*
+    "cid": "159",
+  "color": "red",
+  "number": 5*/
+    
+    $cid = $requestData['cid'];
+    $gid = $requestData['gid'];
+    $pid = $requestData['pid'];
+    
+    $bdd = getDB();
+    
+    
+    $sql = "select *
+    from carte c, main m
+    where c.cid = m.carte_id
+    and m.game_id = '$gid'
+    and m.player_id = '$pid'
+    and m.carte_id = '$cid'
+    and m.isPlayed = 0";
+    
+    $exe = $bdd->query($sql);
+    
+    if(!($data = $exe->fetch()))
+       return $response->withJson(array("info" => "you don't have this card"))->withStatus(400);
+    
+    $sql = "update main
+    set isPlayed = 1
+    where carte_id = :cid
+    and game_id = :gid";
+    
+    $req = $bdd->prepare($sql);
+    $req->bindParam("cid", $cid);
+    $req->bindParam("gid", $gid);
+    $req->execute();
+    
+    $sql = "update game
+    set lastPlayedCard = :cid
+    where gid = :gid";
+    
+    $req = $bdd->prepare($sql);
+    $req->bindParam("cid", $cid);
+    $req->bindParam("gid", $gid);
+    $req->execute();
+    
+    return $response;
 }
 ?>

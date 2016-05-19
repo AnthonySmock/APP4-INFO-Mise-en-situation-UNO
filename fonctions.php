@@ -21,3 +21,38 @@ function getDB()
     $dbConnection->setAttribute(PDO::ATTR_ERRMODE, PDO::ERRMODE_EXCEPTION);
     return $dbConnection;
 }
+
+function convertNumberName($numberName) {
+    switch($numberName) {
+            case "un":
+            return 1;
+            break;
+            case "deux":
+            return 2;
+            break;
+            case "trois":
+            return 3;
+            break;
+            case "quatre":
+            return 4;
+            break;
+            case "cinq":
+            return 5;
+            break;
+            case "six":
+            return 6;
+            break;
+            case "sept":
+            return 7;
+            break;
+            case "huit":
+            return 8;
+            break;
+            case "neuf":
+            return 9;
+            break;
+        }
+    
+    return 1;
+}
+?>

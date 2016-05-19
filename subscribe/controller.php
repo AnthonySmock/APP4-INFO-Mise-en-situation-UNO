@@ -42,23 +42,23 @@ $app->post('/api/subscribe', function ($request, $response, $args) use ($app)
 	$req->execute(array($player_username));
 	$donnees = $req->fetchAll();
 	if (preg_match ('/[^a-zA-Z0-9 ]/i', $player_password)){
-		echo 'password ne contient pas que des caractères alphanumériques non accentués';
+		//echo 'password ne contient pas que des caractères alphanumériques non accentués';
 		$info['info']="Error : password invalid ";
 		return $response->withJson($info)->withStatus(400);
 	}else{
-		echo 'password ne contient que des caractères alphanumériques non accentués';
+		//echo 'password ne contient que des caractères alphanumériques non accentués';
 		if($donnees){
-			echo "\n ERROR : username is used ! ";
+			//echo "\n ERROR : username is used ! ";
 			$info['info']="Error : username is used";
 			return $response->withJson($info)->withStatus(400);
 		}
 		else{
-			echo "\n insert...";
+			//echo "\n insert...";
 			if ($bdd->query("INSERT INTO Player (username, password) VALUES ('$player_username','$player_password')")) {
-				echo "New record created successfully";
+				//echo "New record created successfully";
 				$req = $bdd->prepare('SELECT * FROM player WHERE username = ?');
 				$req->execute(array($player_username));
-				$donnees = $req->fetchAll();
+				$donnees = $req->fetch();
 	
 				return $response->withJson($donnees);
 			} else {
@@ -79,7 +79,7 @@ $app->post('/api/connection', function ($request, $response, $args) use ($app)
 	$player_username = $data['username'];
 	$player_password = $data['password'];
      
-     $bdd = getDB();
+    $bdd = getDB();
 
 	// Si tout va bien, on peut continuer
 
@@ -89,15 +89,42 @@ $app->post('/api/connection', function ($request, $response, $args) use ($app)
 	$donnees = $req->fetchAll();
 	
 	if($donnees){
-			echo "\n Vous etes connecté, votre pid : " .$donnees[0]["pid"];
+			//echo "\n Vous etes connecté, votre pid : " .$donnees[0]["pid"];
 			return $response->withJson($donnees);
 		}
 	else{
 		$info['info']="Error : username and password invalid..";
-		echo "\n Error : username and password invalid..";
+		//echo "\n Error : username and password invalid..";
 		return $response->withJson($info)->withStatus(400);
 		}
 });
+
+
+$app->post('/api/profil', function ($request, $response, $args) use ($app)
+ {
+    $data = json_decode($request->getBody(), true);
+	$player_id = $data['pid'];
+	
+    $bdd = getDB();
+     		  
+	// Si tout va bien, on peut continuer
+	// On récupère tout le contenu de la table jeux_video
+	$req = $bdd->prepare('SELECT count(*) as gameWon FROM playersingame WHERE Player_pid = ? AND isWinner = 1');
+	$req->execute(array($player_id));
+	$donnees = $req->fetch();
+	
+	$req = $bdd->prepare('SELECT count(*) as gamePlayed FROM playersingame WHERE Player_pid = ?');
+	$req->execute(array($player_id));
+	$data = $req->fetch();
+
+	$json['gameWon'] = $donnees['gameWon'];
+	$json['gamePlayed'] = $data['gamePlayed'];
+	
+	return $response->withJson($json);
+	
+});
+
+
 
 
 /*$app->put('/api[/{cocotte}]', function ($request, $response, $args) { 
