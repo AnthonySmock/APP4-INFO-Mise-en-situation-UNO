@@ -24,7 +24,7 @@ $app->post('/api/action', function ($request, $response) {
         return playCard($requestData, $response);
     }
 });
-    
+
 function drawCard($requestData)
 {
     $gid = $requestData['gid'];
@@ -39,8 +39,8 @@ function drawCard($requestData)
     and c.number_id = n.number_id
     order by rand()
     limit 1";
-					
-  
+
+
     $exe = $bdd->query($sql);
     if (!($data = $exe->fetch()))
     {
@@ -54,38 +54,40 @@ function drawCard($requestData)
         $card['color'] = $data['color_name'];
         $card['number'] = convertNumberName($data['number_name']);
     }
-    
+
     $cid = $data['cid'];
 
-    
+
     $sql = "update main
     set player_id = :pid
     where carte_id = :cid
     and game_id = :gid";
-	
+
     $req = $bdd->prepare($sql);
     $req->bindParam("pid", $pid);
     $req->bindParam("cid", $cid);
     $req->bindParam("gid", $gid);
     $req->execute();
-    
+
+    incrementTurn($gid);
+
     return $card;
 }
 
 function playCard($requestData, $response) {
-    
+
     /*
     "cid": "159",
   "color": "red",
   "number": 5*/
-    
+
     $cid = $requestData['cid'];
     $gid = $requestData['gid'];
     $pid = $requestData['pid'];
-    
+
     $bdd = getDB();
-    
-    
+
+
     $sql = "select *
     from carte c, main m
     where c.cid = m.carte_id
@@ -93,31 +95,46 @@ function playCard($requestData, $response) {
     and m.player_id = '$pid'
     and m.carte_id = '$cid'
     and m.isPlayed = 0";
-    
+
     $exe = $bdd->query($sql);
-    
+
     if(!($data = $exe->fetch()))
        return $response->withJson(array("info" => "you don't have this card"))->withStatus(400);
-    
+
     $sql = "update main
     set isPlayed = 1
     where carte_id = :cid
     and game_id = :gid";
-    
+
     $req = $bdd->prepare($sql);
     $req->bindParam("cid", $cid);
     $req->bindParam("gid", $gid);
     $req->execute();
-    
+
     $sql = "update game
     set lastPlayedCard = :cid
     where gid = :gid";
-    
+
     $req = $bdd->prepare($sql);
     $req->bindParam("cid", $cid);
     $req->bindParam("gid", $gid);
     $req->execute();
-    
+
+    incrementTurn($gid);
+
     return $response;
+}
+
+function incrementTurn($gid)
+{
+  $bdd = getDB();
+
+  $sql = "update game
+  set turn = turn + 1
+  where gid = :gid";
+
+  $req = $bdd->prepare($sql);
+  $req->bindParam("gid", $gid);
+  $req->execute();
 }
 ?>
