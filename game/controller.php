@@ -2,10 +2,6 @@
 use \Psr\Http\Message\ServerRequestInterface as Request;
 use \Psr\Http\Message\ResponseInterface as Response;
 
-require 'vendor/autoload.php';
-
-$app = new Slim\App();
-
 // requete permettant d'afficher les parties en cours 
 $app->get('/api/game', function ($request, $response) {
 	getGame($request, $response);
@@ -324,6 +320,8 @@ function enterGame($request, $response)
 		$pid = $dataReceived['pid'];
 		$gid = $dataReceived['gid'];
 		$pwd = $dataReceived['password'];
+		$winner = 0;
+		$admin = 0;
 		
 		if ( isExist($pid) && isExist($gid) )
 		{
@@ -371,15 +369,16 @@ function enterGame($request, $response)
 						if ( $data['nbJoueurs'] < 4)
 						{
 							// on fait l'insertion
-							echo "on doit faire l'insertion";
-							$sql = "insert playersingame (Game_gid, Player_pid)
-									values (:gid, :pid)
+							$sql = "insert playersingame (Game_gid, Player_pid, isWinner, isAdmin)
+									values (:gid, :pid, :winner, :admin)
 								";
 							try {
 
 									$req = $db->prepare($sql);
 									$req->bindParam("gid", $gid);
 									$req->bindParam("pid", $pid);
+									$req->bindParam("winner", $winner);
+									$req->bindParam("admin", $admin);
 									$req->execute();
 							} catch (PDOException $e)
 							{
@@ -387,6 +386,74 @@ function enterGame($request, $response)
 								$erreur['info'] = "erreur d'insertion";
 								return $response->withJson($erreur)->withStatus(400);
 							}
+							// distribution des cartes au créateur de la partie
+							$sql =  "
+									select cid, col.color_name, n.number_name
+									from carte c, main m, number n, color col
+									where col.color_id = c.color_id
+									and c.number_id = n.number_id
+									and c.cid = m.carte_id
+									and m.game_id = '$gid'
+									and player_id is  null	
+									order by rand()
+									limit 3
+							";
+							$exe = $db->query($sql);
+							if ($exe == false)
+							{
+								$erreur['info'] = "erreur il n'y a plus de cartes disponibles, elles ont toutes été affectées";
+								return $response->withJson($erreur)->withStatus(400);
+							}
+							else
+							{
+								$array = array();
+								$cpt = 0;
+								while ($data = $exe->fetch() )
+								{
+									$carteToAffect = $data['cid'];
+									$colorName = $data['color_name'];
+									$numberName = $data['number_name'];
+									// préparation des données json à envoyer
+									$dataToSend = [ "cid" => $carteToAffect,
+													"color" => $colorName,
+													"number" => $numberName,
+												  ];
+									$array[$cpt] = $dataToSend;
+									$cpt = $cpt + 1;
+									
+									// ajout des cartes au créateur
+									$sql = "update main
+											set player_id = :pid
+											where carte_id = :cid
+											and game_id = :gid";
+									try {
+											$req = $db->prepare($sql);
+											$req->bindParam("pid", $pid);
+											$req->bindParam("cid", $carteToAffect);
+											$req->bindParam("gid", $gid);
+											$req->execute();
+											
+									} catch (PDOException $e)
+									{
+										echo '{"error":{"text":'. $e->getMessage() .'}}';
+										$erreur['info'] = "erreur d'insertion";
+										return $response->withJson($erreur)->withStatus(400);
+									}
+				
+								}
+								$json = [ 
+										  "yourCards" => $array,
+										];
+								return $response->withJson($json);
+								
+
+							}
+							
+							
+							
+							
+							
+							
 						}
 						else
 						{
@@ -417,15 +484,16 @@ function enterGame($request, $response)
 					if ( $data['nbJoueurs'] < 4)
 					{
 						// on fait l'insertion
-						echo "on doit faire l'insertion";
-						$sql = "insert playersingame (Game_gid, Player_pid)
-								values (:gid, :pid)
+						$sql = "insert playersingame (Game_gid, Player_pid, isWinner, isAdmin)
+								values (:gid, :pid, :winner, :admin)
 							";
 						try {
 
 								$req = $db->prepare($sql);
 								$req->bindParam("gid", $gid);
 								$req->bindParam("pid", $pid);
+								$req->bindParam("winner", $winner);
+								$req->bindParam("admin", $admin);
 								$req->execute();
 						} catch (PDOException $e)
 						{
@@ -433,19 +501,81 @@ function enterGame($request, $response)
 							$erreur['info'] = "erreur d'insertion";
 							return $response->withJson($erreur)->withStatus(400);
 						}
+						// distribution des cartes 
+						$sql =  "
+									select cid, col.color_name, n.number_name
+									from carte c, main m, number n, color col
+									where col.color_id = c.color_id
+									and c.number_id = n.number_id
+									and c.cid = m.carte_id
+									and m.game_id = '$gid'
+									and player_id is  null	
+									order by rand()
+									limit 3
+							";
+						$exe = $db->query($sql);
+						if ($exe == false)
+						{
+							$erreur['info'] = "erreur il n'y a plus de cartes disponibles, elles ont toutes été affectées";
+							return $response->withJson($erreur)->withStatus(400);
+						}
+						else
+						{
+							$array = array();
+							$cpt = 0;
+							while ($data = $exe->fetch() )
+							{
+								$carteToAffect = $data['cid'];
+								$colorName = $data['color_name'];
+								$numberName = $data['number_name'];
+								// préparation des données json à envoyer
+								$dataToSend = [ "cid" => $carteToAffect,
+												"color" => $colorName,
+												"number" => $numberName,
+											  ];
+								$array[$cpt] = $dataToSend;
+								$cpt = $cpt + 1;
+								
+								// ajout des cartes au créateur
+								$sql = "update main
+										set player_id = :pid
+										where carte_id = :cid
+										and game_id = :gid";
+								try {
+										$req = $db->prepare($sql);
+										$req->bindParam("pid", $pid);
+										$req->bindParam("cid", $carteToAffect);
+										$req->bindParam("gid", $gid);
+										$req->execute();
+										
+								} catch (PDOException $e)
+								{
+									echo '{"error":{"text":'. $e->getMessage() .'}}';
+									$erreur['info'] = "erreur d'insertion";
+									return $response->withJson($erreur)->withStatus(400);
+								}
+				
+							}
+							$json = [ 
+									  "yourCards" => $array,
+									];
+							return $response->withJson($json);
+					
+						}
 					}
 					else
 					{
 						$erreur['info'] = "erreur, il y a déjà 4 joueurs";
 						return $response->withJson($erreur)->withStatus(400);
-					
 					}
+				
 				}
 			}
 			else
 			{
 				$erreur['info'] = "erreur  avec le pid ou le gid";
 				return $response->withJson($erreur)->withStatus(400);
+			
 			}
 		}
 		else
