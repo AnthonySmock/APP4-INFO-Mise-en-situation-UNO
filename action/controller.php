@@ -139,17 +139,42 @@ function incrementTurn($gid)
 }
 
 $app->get("/api/turn", function($request, $response) {
-  return $response->write(getCurrentTurn(36));
+  return $response->withJson(getPlayersTurn(36));
 });
+
+function getPlayersTurn($gid)
+{
+
+  $bdd = getDB();
+
+  $sql = "SELECT @rownum:=@rownum + 1 as row_number,
+          t.*
+          FROM (
+            SELECT * FROM playersingame WHERE Game_gid = 36
+          ) t,
+          (SELECT @rownum := 0) r";
+
+          $exe = $bdd->query($sql);
+
+          $playersTurn;
+
+          while($data = $exe->fetch())
+          {
+            $playersTurn[$data['Player_pid']] = $data['row_number'];
+          }
+
+          return $playersTurn;
+
+}
 
 function getCurrentTurn($gid)
 {
 
   $bdd = getDB();
 
-  $sql = "select turn
-  from game g
-  where g.gid = '$gid'";
+  $sql = "SELECT turn
+  FROM game g
+  WHERE g.gid = '$gid'";
 
   $exe = $bdd->query($sql);
 
