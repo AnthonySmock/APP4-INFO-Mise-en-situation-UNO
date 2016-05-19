@@ -25,10 +25,66 @@ $app->post('/api/action', function ($request, $response) {
     }
 });
 
+/*$app->post('/api/state', function ($request, $response) {
+	if(rand(1, 4) == 1)
+		$data['isYourTurn'] = true;
+	else
+		$data['isYourTurn'] = false;
+	$data['isFinished'] = false;
+	$data['isWinner'] = false;
+	$data['isBegun'] = true;
+	$data['upperCard'] = array(
+					'color' => 'red',
+					'number' => 9);
+	$data['yourCards'] = array(
+					array(
+						'cid' => 67,
+						'color' => 'blue',
+						'number' => 1),
+
+					array(
+						'cid' => 43,
+						'color' => 'red',
+						'number' => 4));
+
+	$data['othersNumberOfCards'] = array(
+					array(
+						'username' => 'Mohamed',
+						'numberOfCards' => 4),
+
+					array(
+						'username' => 'Nicolas',
+						'numberOfCards' => 5),
+					array(
+						'username' => 'Anthony',
+						'numberOfCards' => 7));
+	return $response->withJson($data);
+});*/
+
+function isPlayerInGame($pid, $gid)
+{
+  $bdd = getDB();
+  $sql = "select pg.Player_pid
+  from playersingame pg, game g
+  where pg.Player_pid = '$pid'
+  and pg.Game_gid = '$gid'
+  and pg.Game_gid = g.gid";
+
+  $exe = $bdd->query($sql);
+
+  if (!($data = $exe->fetch()))
+    return false;
+  else
+    return true;
+}
+
 function drawCard($requestData, $response)
 {
     $gid = $requestData['gid'];
     $pid = $requestData['pid'];
+
+    if(!isPlayerInGame($pid, $gid))
+      return $response->withJson(array("info" => "you aren't in this game"))->withStatus(400);
 
     if(!isPlayerTurn($pid, $gid))
       return $response->withJson(array("info" => "it's not your turn"))->withStatus(400);
@@ -82,6 +138,9 @@ function playCard($requestData, $response) {
     $cid = $requestData['cid'];
     $gid = $requestData['gid'];
     $pid = $requestData['pid'];
+
+    if(!isPlayerInGame($pid, $gid))
+      return $response->withJson(array("info" => "you aren't in this game"))->withStatus(400);
 
     if(!isPlayerTurn($pid, $gid))
       return $response->withJson(array("info" => "it's not your turn"))->withStatus(400);
