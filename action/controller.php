@@ -14,7 +14,7 @@ $app->post('/api/action', function ($request, $response) {
     if(!is_int($requestData['pid']))
             return $response->withJson(array("info" => "pid must be an integer"))->withStatus(400);
     if($requestData['action'] == "draw")
-        return $response->withJson(drawCard($requestData));
+        return drawCard($requestData, $response);
     if($requestData['action'] == "play")
     {
         if(!isset($requestData['cid']))
@@ -25,10 +25,14 @@ $app->post('/api/action', function ($request, $response) {
     }
 });
 
-function drawCard($requestData)
+function drawCard($requestData, $response)
 {
     $gid = $requestData['gid'];
     $pid = $requestData['pid'];
+
+    if(!isPlayerTurn($pid, $gid))
+      return $response->withJson(array("info" => "it's not your turn"))->withStatus(400);
+
     $bdd = getDB();
     $sql = "select c.cid, co.color_name, n.number_name
     from carte c, main m, color co, number n
@@ -71,7 +75,7 @@ function drawCard($requestData)
 
     incrementTurn($gid);
 
-    return $card;
+    return $response->withJson($card);
 }
 
 function playCard($requestData, $response) {
@@ -85,8 +89,10 @@ function playCard($requestData, $response) {
     $gid = $requestData['gid'];
     $pid = $requestData['pid'];
 
-    $bdd = getDB();
+    if(!isPlayerTurn($pid, $gid))
+      return $response->withJson(array("info" => "it's not your turn"))->withStatus(400);
 
+    $bdd = getDB();
 
     $sql = "select *
     from carte c, main m
