@@ -14,7 +14,7 @@ require 'fonctions.php';
 
 $app = new Slim\App();
 
-$app->get('/api/carte', function ($request, $response, $args) {
+$app->get('/api/carte', function ($request, $response) {
 	$carte['color'] = 'blue';
 	$carte['number'] = 2;
 	$cartes[0] = $carte;
@@ -79,6 +79,6 @@ $app->post('/api/state', function ($request, $response) {
 require('action/controller.php');
 require('game/controller.php');
 require('subscribe/controller.php');
-    
+
 $app->run();
 ?>
