@@ -34,19 +34,8 @@ $app->post('/api/subscribe', function ($request, $response, $args) use ($app)
 	$player_username = $data['username'];
 	$player_password = $data['password'];
 	
-	/*try
-	{
-		// On se connecte à MySQL
-		$bdd = new PDO('mysql:host=localhost;dbname=Uno_game;charset=utf8', 'root', '');
-	}
-	catch(Exception $e)
-	{
-		// En cas d'erreur, on affiche un message et on arrête tout
-			die('Erreur : '.$e->getMessage());
-	}*/
      $bdd = getDB();
      
-
 	// Si tout va bien, on peut continuer
 	// On récupère tout le contenu de la table jeux_video
 	$req = $bdd->prepare('SELECT * FROM player WHERE username = ?');
@@ -54,26 +43,30 @@ $app->post('/api/subscribe', function ($request, $response, $args) use ($app)
 	$donnees = $req->fetchAll();
 	if (preg_match ('/[^a-zA-Z0-9 ]/i', $player_password)){
 		echo 'password ne contient pas que des caractères alphanumériques non accentués';
+		$info['info']="Error : password invalid ";
+		return $response->withJson($info)->withStatus(400);
 	}else{
 		echo 'password ne contient que des caractères alphanumériques non accentués';
 		if($donnees){
-			echo "\n ERROR : il y a deja un compte avec ce nom ! ";
+			echo "\n ERROR : username is used ! ";
+			$info['info']="Error : username is used";
+			return $response->withJson($info)->withStatus(400);
 		}
 		else{
 			echo "\n insert...";
 			if ($bdd->query("INSERT INTO Player (username, password) VALUES ('$player_username','$player_password')")) {
 				echo "New record created successfully";
+				$req = $bdd->prepare('SELECT * FROM player WHERE username = ?');
+				$req->execute(array($player_username));
+				$donnees = $req->fetchAll();
+	
+				return $response->withJson($donnees);
 			} else {
-				echo "Error: ";
+				echo "Error: DB ";
 			}
+	
 		}
 	}
-	
-	$req = $bdd->prepare('SELECT * FROM player WHERE username = ?');
-	$req->execute(array($player_username));
-	$donnees = $req->fetchAll();
-	
-	return $response->withJson($donnees);
 });
 
 
@@ -85,17 +78,6 @@ $app->post('/api/connection', function ($request, $response, $args) use ($app)
     $data = json_decode($request->getBody(), true);
 	$player_username = $data['username'];
 	$player_password = $data['password'];
-	
-	/*try
-	{
-		// On se connecte à MySQL
-		$bdd = new PDO('mysql:host=localhost;dbname=Uno_game;charset=utf8', 'root', '');
-	}
-	catch(Exception $e)
-	{
-		// En cas d'erreur, on affiche un message et on arrête tout
-			die('Erreur : '.$e->getMessage());
-	}*/
      
      $bdd = getDB();
 
