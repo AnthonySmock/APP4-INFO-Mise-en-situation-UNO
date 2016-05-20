@@ -33,30 +33,28 @@ width:126px;
 height:172px;
 margin-top: 50px;
 text-align: center;
-font-size: 1.1em;
 }
 
 .caption{
-margin:0 auto;
-font-size: 1.1em;
+	margin:0 auto;
 }
 #uno-main{
-        height: 300px;
-        width: 89%;
-        float: left;
-        margin-top: 50px;
-        overflow:scroll;
-    }
+	height: 300px;
+	width: 89%;
+	float: left;
+	margin-top: 50px;
+	overflow:scroll;
+}
 
-	#uno-game{
-        height: 180px;
-        width: 20%;
-        background: green;
-        border: 5px solid #000000;
-        margin: auto;
-        margin-top: 50px;
-    }
-    #my-cards{
-        bottom: 5px;
-        margin: auto;
-    }
+#uno-game{
+	height: 180px;
+	width: 20%;
+	background: green;
+	border: 5px solid #000000;
+	margin: auto;
+	margin-top: 50px;
+}
+#my-cards{
+	bottom: 5px;
+	margin: auto;
+}

@@ -1,65 +1,94 @@
 var names = [];
-var count=10;
+var count=40;
 var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
+var notre_tour=0;
 var action = 0;
+var pid,gid;
+var change = 0;
 
 function timer()
 {
   count=count-1;
-  
+  //alert(document.getElementById('span_gid').value);
 	$.ajax({
 		url: 'http://dev.asmock.com/api/state',
 		dataType: "json",
 		type: "POST", 
-		data: JSON.stringify({ "pid": 3, "gid":2 }),
+		data: JSON.stringify({ "pid": parseInt(sessionStorage.getItem("gid_partie")), "gid":parseInt(sessionStorage.getItem("pid_joueur")) }),
 		success: function(data)
 		{
-			document.getElementById("n1").innerHTML = data.othersNumberOfCards[0]["username"];
-			document.getElementById("n2").innerHTML = data.othersNumberOfCards[1]["username"];
-			document.getElementById("n3").innerHTML = data.othersNumberOfCards[2]["username"];
+			//alert(JSON.stringify(data));
+			//alert(data.isYourTurn);
+			if(data.isYourTurn == false)
+			{
+				change = 0;
+				
+				//alert("pas notre tour");
+				notre_tour=0;
+				//count = 0;
+			}
+			else
+			{
+				//alert("notre tour");
+				notre_tour=1;
+				if(change==0)
+				{
+					count = 30;
+					change=1;
+				}
+				//count = 30;
+			}
+			document.getElementById("n1").innerHTML = data.othersNumberOfCards["1"]["username"];
+			document.getElementById("n2").innerHTML = data.othersNumberOfCards["2"]["username"];
+			document.getElementById("n3").innerHTML = data.othersNumberOfCards["3"]["username"];
 			
-			document.getElementById("nb1").innerHTML = data.othersNumberOfCards[0]["numberOfCards"];
-			document.getElementById("nb2").innerHTML = data.othersNumberOfCards[1]["numberOfCards"];
-			document.getElementById("nb3").innerHTML = data.othersNumberOfCards[2]["numberOfCards"];
+			document.getElementById("nb1").innerHTML = data.othersNumberOfCards["1"]["numberOfCards"];
+			document.getElementById("nb2").innerHTML = data.othersNumberOfCards["2"]["numberOfCards"];
+			document.getElementById("nb3").innerHTML = data.othersNumberOfCards["3"]["numberOfCards"];
 			
-			/*names = [];
+			names = [];
 			for(var i=0; i<data.yourCards.length; i++)
 			{
 				names.push(data.yourCards[i]["number"]+"_"+data.yourCards[i]["color"]+"_"+data.yourCards[i]["cid"]);
 			}
-			affichage();*/
+			affichage();
+			
+			var existing_div1 = document.getElementById("uno-game"),
+			new_div1 = document.createElement("div"),
+			new_span1 = document.createElement("span"),
+			new_span2 = document.createElement("span");
+			
+			var texte = "card num-"+data.upperCard["number"]+" "+data.upperCard["color"]; //"card num-6 red"
+			$(existing_div1).empty();
+			$(new_div1).addClass(texte);$(new_span1).addClass('inner');$(new_span2).addClass('mark').html(data.upperCard["number"]);
+			$(new_span1).append($(new_span2));$(new_div1).append($(new_span1));$(existing_div1).append($(new_div1));
 		},
 		error:function(request)
 		 {          
-			alert(request.responseText);
+			//alert(request.responseText);
 		 }
 	});
   
-  if(count>=5)
+  if(notre_tour == 1)
   {
 	  $("#u4").css("pointer-events", "auto");
 	  $('.card').css("pointer-events", "auto");
 	  $("#sab").css("visibility", "visible");$("#sab").css("width", "100px"); $("#sab").css("height", "100px");
 	  $("#stop").css("visibility", "hidden"); $("#stop").css("width", "0px"); $("#stop").css("height", "0px");
-	  document.getElementById("timer").innerHTML=count-45 + " secs"; // watch for spelling
+	  document.getElementById("timer").innerHTML=count + " secs"; // watch for spelling
   }
-  else
+  if(count<=0)
   {
-	  if(action==0)
+	  count = 0;
+	  if(action==0) 
 	  {
-		  pioche(6,"red");
+		  pioche();
 	  }
 	  $("#sab").css("visibility", "hidden");$("#sab").css("width", "0px"); $("#sab").css("height", "0px");
 	  $("#stop").css("visibility", "visible");$("#stop").css("width", "100px"); $("#stop").css("height", "100px");
-	   $("#u4").css("pointer-events", "none");
-	   $('.card').css("pointer-events", "none");
-	   document.getElementById("timer").innerHTML="Patienter"; // watch for spelling
-  }
-  
-  if(count <=0)
-  {
-	  count = 10;
-	  action = 0;
+	  $("#u4").css("pointer-events", "none");
+	  $('.card').css("pointer-events", "none");
+	  document.getElementById("timer").innerHTML="Patienter"; // watch for spelling
   }
 }
 
@@ -146,56 +175,71 @@ function affichage()
 			{
 				$this = $(e.target);
 				var texte = $(this).attr('class');
-				var cid = $(this).attr('title');
+				var cid = parseInt($(this).attr('title'));
 				$.ajax({
 					url: 'http://dev.asmock.com/api/action',
 					dataType: "json",
 					type: "POST", 
-					data: JSON.stringify({ "action": "play", "cid":cid }),
+					data: JSON.stringify({ "pid": pid, "gid": gid,"action": "play", "cid":cid }),
 					success: function(data)
 					{
-						remove(texte,cid); //on enleve la carte de la main
+						//remove(texte,cid); //on enleve la carte de la main
+						//alert("reussi jouer");
 						action = 1;
-				        count = 5;
+						timer();
+						count=0;
+						//count=30;
+						//notre_tour = 0;
 					},
 					error:function(request)
-					 {          
-						alert(request.responseText);
+					 {   
+						//alert("pas reussi jouer");
+						       
+						alert(request.responseText+"-cid: "+cid);
 					 }
 				});
 			}
 		});
 }
 
-function pioche(num,coul) //draw
+function pioche() //draw
 {
-	action=1;
-	count=5;
-	timer();
+
 	
 	$.ajax({
 	url: 'http://dev.asmock.com/api/action',
 	dataType: "json",
 	type: "POST",
-	data: JSON.stringify({ "action": "draw" }),
+	data: JSON.stringify({ "pid": pid, "gid":gid, "action": "draw" }),
 	success: function(data)
 	{
+		//alert(JSON.stringify(data) +"-draw"); 
 		names.push(data["number"]+"_"+data["color"]+"_"+data["cid"]);
 		affichage();
 	},
 	error:function(request)
 	 {          
-		alert(request.responseText);
+		//alert(request.responseText);
 	 }
 	});
+	
+	action=1;
+	//notre_tour = 0;
+	count=0;
+	timer();
 }
 
 
 $(document).ready(function()
 {
+	pid = parseInt(sessionStorage.getItem("gid_partie"));
+  gid = parseInt(sessionStorage.getItem("pid_joueur"));
+  console.log("gid:"+gid);console.log("pid:"+pid);
+	//console.log("coucou");
+
 	var json_obj;
-	
-	$.ajax({
+	//console.log(document.getElementById("span_gid").value);
+	/*$.ajax({
 	url: 'http://dev.asmock.com/api/carte',
 	dataType: "json",
 	success: function(data)
@@ -207,13 +251,13 @@ $(document).ready(function()
 		}
 		affichage();
 	},
-	error:function()
+	error:function(request)
 	{          
-		errorToConnect();
+		//alert(request.responseText);
 	}
-	});
+	});*/
 	
 	$('#u4').click(function(e) {
-		pioche(5,"green");
+		pioche();
 	});
 });
