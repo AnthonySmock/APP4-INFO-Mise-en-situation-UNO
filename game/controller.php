@@ -212,6 +212,50 @@ function postGame($request, $response)
 						}
 					}
 				}
+				// mettre la première carte sur la table
+				// on sélectionne une carte parmi celle qui n'ont pas été joué au hasard
+				$sql =  "
+						SELECT carte_id
+						from main
+						where game_id = '$gid'
+						and player_id is null
+						and isPlayed = false
+						order by rand()
+						limit 1
+					";
+				$exe = $db->query($sql);
+				if ($exe == false)
+				{
+					$erreur['info'] = "erreur il n'y a plus de cartes disponibles";
+					return $response->withJson($erreur)->withStatus(400);
+				}
+				else
+				{					
+					$data = $exe->fetch();
+					$carteId = $data['carte_id'];
+					$played = 1;
+					// on met cette carte à jouer
+					// ajout des cartes au créateur
+					$sql = "update main
+							set isPlayed = :played
+							where carte_id = :cid
+							and game_id = :gid";
+					try {
+							$req = $db->prepare($sql);
+							$req->bindParam("played", $played);
+							$req->bindParam("cid", $carteId);
+							$req->bindParam("gid", $gid);
+							$req->execute();
+							
+					} catch (PDOException $e)
+					{
+						echo '{"error":{"text":'. $e->getMessage() .'}}';
+						$erreur['info'] = "erreur d'update";
+						return $response->withJson($erreur)->withStatus(400);
+					}
+					
+					
+				}
 				// distribution des cartes au créateur de la partie
 				$sql =  "
 						select cid, col.color_name, n.number_name
@@ -220,9 +264,10 @@ function postGame($request, $response)
 						and c.number_id = n.number_id
 						and c.cid = m.carte_id
 						and m.game_id = '$gid'
-						and player_id is  null	
+						and player_id is  null
+						and isPlayed = false
 						order by rand()
-						limit 3
+						limit 7
 				";
 				$exe = $db->query($sql);
 				if ($exe == false)
@@ -272,6 +317,7 @@ function postGame($request, $response)
 							];
 					return $response->withJson($json);
 				}
+				
 				
 			}
 			else
@@ -570,6 +616,7 @@ function enterGame($request, $response)
 					}
 				
 				}
+				
 			}
 			else
 			{

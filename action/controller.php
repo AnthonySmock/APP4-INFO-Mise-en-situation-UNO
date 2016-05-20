@@ -25,41 +25,151 @@ $app->post('/api/action', function ($request, $response) {
     }
 });
 
-/*$app->post('/api/state', function ($request, $response) {
-	if(rand(1, 4) == 1)
-		$data['isYourTurn'] = true;
-	else
-		$data['isYourTurn'] = false;
-	$data['isFinished'] = false;
-	$data['isWinner'] = false;
-	$data['isBegun'] = true;
-	$data['upperCard'] = array(
-					'color' => 'red',
-					'number' => 9);
-	$data['yourCards'] = array(
-					array(
-						'cid' => 67,
-						'color' => 'blue',
-						'number' => 1),
+$app->post('/api/state', function ($request, $response) {
 
-					array(
-						'cid' => 43,
-						'color' => 'red',
-						'number' => 4));
+  $requestData = json_decode($request->getBody(), true);
 
-	$data['othersNumberOfCards'] = array(
-					array(
-						'username' => 'Mohamed',
-						'numberOfCards' => 4),
+  if(!isset($requestData['gid']))
+      return $response->withJson(array("info" => "missing field gid"))->withStatus(400);
+  if(!isset($requestData['pid']))
+      return $response->withJson(array("info" => "missing field pid"))->withStatus(400);
+  if(!is_int($requestData['gid']))
+          return $response->withJson(array("info" => "gid must be an integer"))->withStatus(400);
+  if(!is_int($requestData['pid']))
+          return $response->withJson(array("info" => "pid must be an integer"))->withStatus(400);
 
-					array(
-						'username' => 'Nicolas',
-						'numberOfCards' => 5),
-					array(
-						'username' => 'Anthony',
-						'numberOfCards' => 7));
+  return getState($requestData, $response);
+});
+
+
+function getState($requestData, $response)
+{
+  $gid = $requestData['gid'];
+  $pid = $requestData['pid'];
+
+  if(!isPlayerInGame($pid, $gid))
+    return $response->withJson(array("info" => "you aren't in this game"))->withStatus(400);
+
+
+		$data['isYourTurn'] = isPlayerTurn($pid, $gid);
+
+	$data['isFinished'] = isGameFinished($gid);
+	$data['isWinner'] = isPlayerWinner($pid, $gid);
+	$data['isBegun'] = isGameBegun($gid);
+	$data['upperCard'] = getLastPlayedCard($gid);
+	$data['yourCards'] = getPlayerCards($pid, $gid);
+
+	$data['othersNumberOfCards'] = getOthersNumberOfCardsInOrder($pid, $gid);
+
 	return $response->withJson($data);
-});*/
+}
+
+function isGameFinished($gid)
+{
+  $bdd = getDB();
+  $sql = "SELECT isTerminated
+          FROM game
+          WHERE gid = '$gid'";
+
+  $exe = $bdd->query($sql);
+
+  $data = $exe->fetch();
+
+  if($data['isTerminated'] == 0)
+    return false;
+    else {
+      return true;
+    }
+}
+
+function getOthersNumberOfCardsInOrder($pid, $gid)
+{
+  $bdd = getDB();
+
+  $sql = "SELECT @rownum:=@rownum + 1 as row_number,
+          t.*
+          FROM (
+            SELECT p.pid, p.username, n FROM playersingame pg, player p, (SELECT COUNT(*) AS n, p.pid AS Plid FROM main m, player p, game g WHERE m.isPlayed = 0 AND g.gid = m.game_id AND g.gid = '$gid' AND m.player_id = p.pid GROUP BY p.pid) AS n WHERE pg.Game_gid = '$gid' AND pg.Player_pid = p.pid AND p.pid = Plid
+          ) t,
+          (SELECT @rownum := 0) r";
+
+    $exe = $bdd->query($sql);
+    
+    $turns = getPlayersTurn($gid);
+    $turn = $turns[$pid];
+
+    $playersTurnAndNumber;
+
+  while($data = $exe->fetch())
+  {
+      
+    $playersTurnAndNumber[(($data['row_number'] + (4 - $turn))) % 4 + 1] = array("username" => $data['username'], "numberOfCards" => $data['n']);
+  }
+
+  return $playersTurnAndNumber;
+}
+
+function isGameBegun($gid)
+{
+  $bdd = getDB();
+  $sql = "SELECT COUNT(*) AS n
+          FROM player p, game g, playersingame pg
+          WHERE g.gid = '$gid'
+          AND g.gid = pg.Game_gid
+          AND p.pid = pg.Player_pid";
+
+
+  $exe = $bdd->query($sql);
+
+  $data = $exe->fetch();
+
+  if($data['n'] == 4)
+    return true;
+  else {
+    return false;
+  }
+}
+
+function isGameRunning($gid)
+{
+  if(isGameBegun($gid) && !isGameFinished($gid))
+    return true;
+  else {
+    return false;
+  }
+}
+
+function getPlayerCards($pid, $gid)
+{
+  $bdd = getDB();
+  $sql = "select m.carte_id
+  from main m, game g
+  where g.gid = '$gid'
+  and m.game_id = g.gid
+  and m.player_id = '$pid'
+  and m.isPLayed = 0";
+
+  $exe = $bdd->query($sql);
+    
+    $data = $exe->fetchAll();
+    
+    foreach($data as &$carte)
+    {
+        $carte = getInfoOnCard($carte['carte_id']);
+        $carte['color'] = $carte['color_name'];
+        $carte['number'] = convertNumberName($carte['number_name']);
+    }
+
+  return $data;
+}
+
+function isPlayerWinner($pid, $gid)
+{
+  if(!getPlayerCards($pid, $gid))
+    return true;
+  else
+    return false;
+}
 
 function isPlayerInGame($pid, $gid)
 {
@@ -83,8 +193,12 @@ function drawCard($requestData, $response)
     $gid = $requestData['gid'];
     $pid = $requestData['pid'];
 
+
     if(!isPlayerInGame($pid, $gid))
       return $response->withJson(array("info" => "you aren't in this game"))->withStatus(400);
+
+    if(!isGameRunning($gid))
+      return $response->withJson(array("info" => "game is not running"))->withStatus(400);
 
     if(!isPlayerTurn($pid, $gid))
       return $response->withJson(array("info" => "it's not your turn"))->withStatus(400);
@@ -139,8 +253,12 @@ function playCard($requestData, $response) {
     $gid = $requestData['gid'];
     $pid = $requestData['pid'];
 
+
     if(!isPlayerInGame($pid, $gid))
       return $response->withJson(array("info" => "you aren't in this game"))->withStatus(400);
+
+    if(!isGameRunning($gid))
+      return $response->withJson(array("info" => "game is not running"))->withStatus(400);
 
     if(!isPlayerTurn($pid, $gid))
       return $response->withJson(array("info" => "it's not your turn"))->withStatus(400);
@@ -163,7 +281,7 @@ function playCard($requestData, $response) {
     $lastPlayedCard = getLastPlayedCard($gid);
     $playerCard = getInfoOnCard($cid);
 
-    if(!($lastPlayedCard['color_name'] == $playerCard['color_name'] || $lastPlayedCard['number_name'] == $playerCard['color_number']))
+    if(!($lastPlayedCard['color_name'] == $playerCard['color_name'] || $lastPlayedCard['number_name'] == $playerCard['number_name']))
       return $response->withJson(array("info" => "you can't play this card"))->withStatus(400);
 
     $sql = "update main
@@ -185,11 +303,42 @@ function playCard($requestData, $response) {
     $req->bindParam("gid", $gid);
     $req->execute();
 
+    if(isPlayerWinner($pid, $gid))
+    {
+      makeWinner($pid, $gid);
+    }
+
     incrementTurn($gid);
 
     return $response;
 }
 
+function makeWinner($pid, $gid)
+{
+  $bdd = getDB();
+  $sql = "update playersingame
+  set isWinner = 1
+  where Game_gid = :gid
+  and Player_pid = :pid";
+
+  $req = $bdd->prepare($sql);
+  $req->bindParam("gid", $gid);
+  $req->bindParam("pid", $pid);
+  $req->execute();
+  terminateGame($gid);
+}
+
+function terminateGame($gid)
+{
+  $bdd = getDB();
+  $sql = "update game
+  set isTerminated = 1
+  where gid = :gid";
+
+  $req = $bdd->prepare($sql);
+  $req->bindParam("gid", $gid);
+  $req->execute();
+}
 
 function getInfoOnCard($cid)
 {
@@ -219,7 +368,13 @@ function getLastPlayedCard($gid)
 
   $exe = $bdd->query($sql);
 
-  return $data = $exe->fetch();
+  if($carte = $exe->fetch())
+  {
+    $carte['color'] = $carte['color_name'];
+    $carte['number'] = convertNumberName($carte['number_name']);
+  }
+    
+    return $carte;
 }
 
 function incrementTurn($gid)
@@ -243,7 +398,7 @@ function getPlayersTurn($gid)
   $sql = "SELECT @rownum:=@rownum + 1 as row_number,
           t.*
           FROM (
-            SELECT * FROM playersingame WHERE Game_gid = 36
+            SELECT * FROM playersingame WHERE Game_gid = '$gid'
           ) t,
           (SELECT @rownum := 0) r";
 
@@ -260,9 +415,6 @@ function getPlayersTurn($gid)
 
 }
 
-$app->get("/api/turn", function($request, $response) {
-  return $response->withJson(array("istrun" => isPlayerTurn(17,36)));
-});
 
 function isPlayerTurn($pid, $gid)
 {
