@@ -238,7 +238,7 @@ function postGame($request, $response)
 					{
 						$carteToAffect = $data['cid'];
 						$colorName = $data['color_name'];
-						$numberName = $data['number_name'];
+						$numberName = convertNumberName($data['number_name']);
 						// préparation des données json à envoyer
 						$dataToSend = [ "cid" => $carteToAffect,
 										"color" => $colorName,
@@ -412,7 +412,7 @@ function enterGame($request, $response)
 								{
 									$carteToAffect = $data['cid'];
 									$colorName = $data['color_name'];
-									$numberName = $data['number_name'];
+									$numberName = convertNumberName($data['number_name']);
 									// préparation des données json à envoyer
 									$dataToSend = [ "cid" => $carteToAffect,
 													"color" => $colorName,
@@ -527,7 +527,7 @@ function enterGame($request, $response)
 							{
 								$carteToAffect = $data['cid'];
 								$colorName = $data['color_name'];
-								$numberName = $data['number_name'];
+								$numberName = convertNumberName($data['number_name']);
 								// préparation des données json à envoyer
 								$dataToSend = [ "cid" => $carteToAffect,
 												"color" => $colorName,
