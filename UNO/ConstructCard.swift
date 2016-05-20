@@ -17,16 +17,16 @@ public class ConstructCard {
         var couleur = UIColor.whiteColor()
         
         switch couleurcarte {
-        case "bleu":
+        case "blue":
             imagefond = UIImage(named: "carte bleu.png")!
             couleur = UIColor.blueColor()
-        case "jaune":
+        case "yellow":
             imagefond = UIImage(named: "carte jaune.png")!
             couleur = UIColor.yellowColor()
-        case "rouge":
+        case "red":
             imagefond = UIImage(named: "carte rouge.png")!
             couleur = UIColor.redColor()
-        case "vert":
+        case "green":
             imagefond = UIImage(named: "carte verte.png")!
             couleur = UIColor.greenColor()
         default: break

@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		CE4D0EE91CE620F10089C152 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D0EE81CE620F10089C152 /* AppDelegate.swift */; };
-		CE4D0EEB1CE620F10089C152 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CE4D0EEA1CE620F10089C152 /* ViewController.swift */; };
 		CE4D0EEE1CE620F10089C152 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE4D0EEC1CE620F10089C152 /* Main.storyboard */; };
 		CE4D0EF01CE620F10089C152 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = CE4D0EEF1CE620F10089C152 /* Assets.xcassets */; };
 		CE4D0EF31CE620F10089C152 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = CE4D0EF11CE620F10089C152 /* LaunchScreen.storyboard */; };
@@ -20,9 +19,29 @@
 		CEF10D4A1CE75D940075DE1E /* imgpersodefault.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEF10D471CE75D940075DE1E /* imgpersodefault.jpg */; };
 		CEF10D4B1CE75D940075DE1E /* tapis jeu.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEF10D481CE75D940075DE1E /* tapis jeu.jpg */; };
 		CEF10D4C1CE75D940075DE1E /* trophee-de-la-coupe-silhouette_318-63600.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = CEF10D491CE75D940075DE1E /* trophee-de-la-coupe-silhouette_318-63600.jpeg */; };
+		CEF5AE8A1CEDD20700A91265 /* uno-icone.png in Resources */ = {isa = PBXBuildFile; fileRef = CEF5AE891CEDD20700A91265 /* uno-icone.png */; };
+		CEF5AE8C1CEDE28700A91265 /* refresh.png in Resources */ = {isa = PBXBuildFile; fileRef = CEF5AE8B1CEDE28700A91265 /* refresh.png */; };
+		CEF5AE901CEDEC7400A91265 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5AE8D1CEDEC7400A91265 /* ViewController.swift */; };
+		CEF5AE911CEDEC7400A91265 /* ViewInscription.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5AE8E1CEDEC7400A91265 /* ViewInscription.swift */; };
+		CEF5AE921CEDEC7400A91265 /* ViewMeilleurScore.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF5AE8F1CEDEC7400A91265 /* ViewMeilleurScore.swift */; };
+		CEF5AE941CEDED3500A91265 /* maxresdefault.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEF5AE931CEDED3500A91265 /* maxresdefault.jpg */; };
+		CEF5AE961CEDF08B00A91265 /* trophe.png in Resources */ = {isa = PBXBuildFile; fileRef = CEF5AE951CEDF08B00A91265 /* trophe.png */; };
 		CEF66CF21CEB016A00B44E5A /* TablesVC.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF66CF11CEB016A00B44E5A /* TablesVC.swift */; };
 		CEF66CF41CEB15BC00B44E5A /* ListeTableMainCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF66CF31CEB15BC00B44E5A /* ListeTableMainCell.swift */; };
 		CEF66CF61CEB17B600B44E5A /* ListeTablesSubCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF66CF51CEB17B600B44E5A /* ListeTablesSubCell.swift */; };
+		CEF9A1B01CEC499B00A4800A /* VariableGlobale.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF9A1AF1CEC499B00A4800A /* VariableGlobale.swift */; };
+		CEF9A1B21CEC4D9B00A4800A /* SwiftSpinner.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF9A1B11CEC4D9B00A4800A /* SwiftSpinner.swift */; };
+		CEF9A1B41CEC511700A4800A /* sablier.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = CEF9A1B31CEC511700A4800A /* sablier.jpeg */; };
+		CEF9A1B81CEC7FE200A4800A /* main.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = CEF9A1B71CEC7FE200A4800A /* main.jpeg */; };
+		CEF9A1BB1CEC833300A4800A /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEF9A1BA1CEC833300A4800A /* QuartzCore.framework */; };
+		CEF9A1BD1CEC8A2F00A4800A /* HRToast+UIView.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF9A1BC1CEC8A2F00A4800A /* HRToast+UIView.swift */; };
+		CEF9A1BF1CEC8CD100A4800A /* main3.png in Resources */ = {isa = PBXBuildFile; fileRef = CEF9A1BE1CEC8CD100A4800A /* main3.png */; };
+		CEF9A1C21CEC91B000A4800A /* sablier2.gif in Resources */ = {isa = PBXBuildFile; fileRef = CEF9A1C01CEC91B000A4800A /* sablier2.gif */; };
+		CEF9A1C31CEC91B000A4800A /* sablier3.gif in Resources */ = {isa = PBXBuildFile; fileRef = CEF9A1C11CEC91B000A4800A /* sablier3.gif */; };
+		CEF9A1C51CEC94B700A4800A /* UIImage+Gif.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEF9A1C41CEC94B700A4800A /* UIImage+Gif.swift */; };
+		CEF9A1C71CEC9F2900A4800A /* stop.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEF9A1C61CEC9F2900A4800A /* stop.jpg */; };
+		CEF9A1C91CECA08800A4800A /* sablier4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEF9A1C81CECA08800A4800A /* sablier4.jpg */; };
+		CEF9A1CB1CECAD2200A4800A /* btnajouter.png in Resources */ = {isa = PBXBuildFile; fileRef = CEF9A1CA1CECAD2200A4800A /* btnajouter.png */; };
 		CEFA1B9D1CE8CE3000BB952A /* ConstructCard.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFA1B9C1CE8CE3000BB952A /* ConstructCard.swift */; };
 		CEFA1BA01CE8CE9700BB952A /* Photos.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEFA1B9E1CE8CE9700BB952A /* Photos.framework */; };
 		CEFA1BA11CE8CE9700BB952A /* PhotosUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CEFA1B9F1CE8CE9700BB952A /* PhotosUI.framework */; };
@@ -33,6 +52,9 @@
 		CEFA1BAB1CE8D43A00BB952A /* carte verte.png in Resources */ = {isa = PBXBuildFile; fileRef = CEFA1BA61CE8D43A00BB952A /* carte verte.png */; };
 		CEFA1BAE1CE8D8F300BB952A /* Cardcell.swift in Sources */ = {isa = PBXBuildFile; fileRef = CEFA1BAD1CE8D8F300BB952A /* Cardcell.swift */; };
 		CEFA1BB01CE8DD3400BB952A /* cartes tas.png in Resources */ = {isa = PBXBuildFile; fileRef = CEFA1BAF1CE8DD3400BB952A /* cartes tas.png */; };
+		CEFC30661CEE56A9007A6027 /* attente.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEFC30651CEE56A9007A6027 /* attente.jpg */; };
+		CEFC306A1CEE59D0007A6027 /* Winning.png in Resources */ = {isa = PBXBuildFile; fileRef = CEFC30691CEE59D0007A6027 /* Winning.png */; };
+		CEFC306C1CEE59F7007A6027 /* game over.jpg in Resources */ = {isa = PBXBuildFile; fileRef = CEFC306B1CEE59F7007A6027 /* game over.jpg */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -55,7 +77,6 @@
 /* Begin PBXFileReference section */
 		CE4D0EE51CE620F10089C152 /* UNO.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = UNO.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE4D0EE81CE620F10089C152 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
-		CE4D0EEA1CE620F10089C152 /* ViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		CE4D0EED1CE620F10089C152 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
 		CE4D0EEF1CE620F10089C152 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		CE4D0EF21CE620F10089C152 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -73,9 +94,30 @@
 		CEF10D471CE75D940075DE1E /* imgpersodefault.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = imgpersodefault.jpg; path = images/imgpersodefault.jpg; sourceTree = "<group>"; };
 		CEF10D481CE75D940075DE1E /* tapis jeu.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "tapis jeu.jpg"; path = "images/tapis jeu.jpg"; sourceTree = "<group>"; };
 		CEF10D491CE75D940075DE1E /* trophee-de-la-coupe-silhouette_318-63600.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "trophee-de-la-coupe-silhouette_318-63600.jpeg"; path = "images/trophee-de-la-coupe-silhouette_318-63600.jpeg"; sourceTree = "<group>"; };
+		CEF5AE891CEDD20700A91265 /* uno-icone.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "uno-icone.png"; path = "images/uno-icone.png"; sourceTree = "<group>"; };
+		CEF5AE8B1CEDE28700A91265 /* refresh.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = refresh.png; path = images/refresh.png; sourceTree = "<group>"; };
+		CEF5AE8D1CEDEC7400A91265 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
+		CEF5AE8E1CEDEC7400A91265 /* ViewInscription.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewInscription.swift; sourceTree = "<group>"; };
+		CEF5AE8F1CEDEC7400A91265 /* ViewMeilleurScore.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewMeilleurScore.swift; sourceTree = "<group>"; };
+		CEF5AE931CEDED3500A91265 /* maxresdefault.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = maxresdefault.jpg; path = images/maxresdefault.jpg; sourceTree = "<group>"; };
+		CEF5AE951CEDF08B00A91265 /* trophe.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = trophe.png; path = images/trophe.png; sourceTree = "<group>"; };
 		CEF66CF11CEB016A00B44E5A /* TablesVC.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TablesVC.swift; sourceTree = "<group>"; };
 		CEF66CF31CEB15BC00B44E5A /* ListeTableMainCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListeTableMainCell.swift; sourceTree = "<group>"; };
 		CEF66CF51CEB17B600B44E5A /* ListeTablesSubCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListeTablesSubCell.swift; sourceTree = "<group>"; };
+		CEF9A1AF1CEC499B00A4800A /* VariableGlobale.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = VariableGlobale.swift; sourceTree = "<group>"; };
+		CEF9A1B11CEC4D9B00A4800A /* SwiftSpinner.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = SwiftSpinner.swift; path = biblio/SwiftSpinner.swift; sourceTree = "<group>"; };
+		CEF9A1B31CEC511700A4800A /* sablier.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sablier.jpeg; path = images/sablier.jpeg; sourceTree = "<group>"; };
+		CEF9A1B71CEC7FE200A4800A /* main.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = main.jpeg; path = images/main.jpeg; sourceTree = "<group>"; };
+		CEF9A1B91CEC827D00A4800A /* Toast-Swift-Framework.h */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; name = "Toast-Swift-Framework.h"; path = "biblio/Toast-Swift-Framework.h"; sourceTree = "<group>"; };
+		CEF9A1BA1CEC833300A4800A /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
+		CEF9A1BC1CEC8A2F00A4800A /* HRToast+UIView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "HRToast+UIView.swift"; path = "biblio/HRToast+UIView.swift"; sourceTree = "<group>"; };
+		CEF9A1BE1CEC8CD100A4800A /* main3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = main3.png; path = images/main3.png; sourceTree = "<group>"; };
+		CEF9A1C01CEC91B000A4800A /* sablier2.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = sablier2.gif; path = images/sablier2.gif; sourceTree = "<group>"; };
+		CEF9A1C11CEC91B000A4800A /* sablier3.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; name = sablier3.gif; path = images/sablier3.gif; sourceTree = "<group>"; };
+		CEF9A1C41CEC94B700A4800A /* UIImage+Gif.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; name = "UIImage+Gif.swift"; path = "biblio/UIImage+Gif.swift"; sourceTree = "<group>"; };
+		CEF9A1C61CEC9F2900A4800A /* stop.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = stop.jpg; path = images/stop.jpg; sourceTree = "<group>"; };
+		CEF9A1C81CECA08800A4800A /* sablier4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = sablier4.jpg; path = images/sablier4.jpg; sourceTree = "<group>"; };
+		CEF9A1CA1CECAD2200A4800A /* btnajouter.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = btnajouter.png; path = images/btnajouter.png; sourceTree = "<group>"; };
 		CEFA1B9C1CE8CE3000BB952A /* ConstructCard.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ConstructCard.swift; sourceTree = "<group>"; };
 		CEFA1B9E1CE8CE9700BB952A /* Photos.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Photos.framework; path = System/Library/Frameworks/Photos.framework; sourceTree = SDKROOT; };
 		CEFA1B9F1CE8CE9700BB952A /* PhotosUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = PhotosUI.framework; path = System/Library/Frameworks/PhotosUI.framework; sourceTree = SDKROOT; };
@@ -86,6 +128,9 @@
 		CEFA1BA61CE8D43A00BB952A /* carte verte.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "carte verte.png"; path = "images/carte verte.png"; sourceTree = "<group>"; };
 		CEFA1BAD1CE8D8F300BB952A /* Cardcell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Cardcell.swift; sourceTree = "<group>"; };
 		CEFA1BAF1CE8DD3400BB952A /* cartes tas.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "cartes tas.png"; path = "images/cartes tas.png"; sourceTree = "<group>"; };
+		CEFC30651CEE56A9007A6027 /* attente.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = attente.jpg; path = images/attente.jpg; sourceTree = "<group>"; };
+		CEFC30691CEE59D0007A6027 /* Winning.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Winning.png; path = images/Winning.png; sourceTree = "<group>"; };
+		CEFC306B1CEE59F7007A6027 /* game over.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = "game over.jpg"; path = "images/game over.jpg"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -93,6 +138,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEF9A1BB1CEC833300A4800A /* QuartzCore.framework in Frameworks */,
 				CEFA1BA01CE8CE9700BB952A /* Photos.framework in Frameworks */,
 				CEFA1BA11CE8CE9700BB952A /* PhotosUI.framework in Frameworks */,
 			);
@@ -118,6 +164,7 @@
 		CE4D0EDC1CE620F00089C152 = {
 			isa = PBXGroup;
 			children = (
+				CEF9A1BA1CEC833300A4800A /* QuartzCore.framework */,
 				CEFA1B9E1CE8CE9700BB952A /* Photos.framework */,
 				CEFA1B9F1CE8CE9700BB952A /* PhotosUI.framework */,
 				CE4D0EE71CE620F10089C152 /* UNO */,
@@ -173,10 +220,15 @@
 		CEF10D3D1CE759290075DE1E /* biblio */ = {
 			isa = PBXGroup;
 			children = (
+				CEF9A1B91CEC827D00A4800A /* Toast-Swift-Framework.h */,
 				CEF10D3E1CE759380075DE1E /* SCLAlertView.swift */,
 				CEF10D3F1CE759380075DE1E /* Toucan.h */,
+				CEF9A1C41CEC94B700A4800A /* UIImage+Gif.swift */,
 				CEF10D401CE759380075DE1E /* Toucan.swift */,
 				CEFA1B9C1CE8CE3000BB952A /* ConstructCard.swift */,
+				CEF9A1B11CEC4D9B00A4800A /* SwiftSpinner.swift */,
+				CEF9A1AF1CEC499B00A4800A /* VariableGlobale.swift */,
+				CEF9A1BC1CEC8A2F00A4800A /* HRToast+UIView.swift */,
 			);
 			name = biblio;
 			sourceTree = "<group>";
@@ -184,8 +236,10 @@
 		CEF10D431CE759710075DE1E /* View */ = {
 			isa = PBXGroup;
 			children = (
-				CE4D0EEA1CE620F10089C152 /* ViewController.swift */,
 				CE4D0EEC1CE620F10089C152 /* Main.storyboard */,
+				CEF5AE8D1CEDEC7400A91265 /* ViewController.swift */,
+				CEF5AE8E1CEDEC7400A91265 /* ViewInscription.swift */,
+				CEF5AE8F1CEDEC7400A91265 /* ViewMeilleurScore.swift */,
 				CEF10D441CE759900075DE1E /* PlateauVC.swift */,
 				CEF66CF11CEB016A00B44E5A /* TablesVC.swift */,
 			);
@@ -195,14 +249,29 @@
 		CEF10D461CE75D860075DE1E /* image */ = {
 			isa = PBXGroup;
 			children = (
+				CEF9A1BE1CEC8CD100A4800A /* main3.png */,
+				CEF9A1B71CEC7FE200A4800A /* main.jpeg */,
+				CEF9A1B31CEC511700A4800A /* sablier.jpeg */,
 				CEFA1BAF1CE8DD3400BB952A /* cartes tas.png */,
+				CEF5AE891CEDD20700A91265 /* uno-icone.png */,
 				CEFA1BA21CE8D43A00BB952A /* carte bleu.png */,
 				CEFA1BA31CE8D43A00BB952A /* carte jaune.png */,
 				CEFA1BA41CE8D43A00BB952A /* carte rouge.png */,
 				CEFA1BA51CE8D43A00BB952A /* carte uno.png */,
 				CEFA1BA61CE8D43A00BB952A /* carte verte.png */,
+				CEF9A1C01CEC91B000A4800A /* sablier2.gif */,
+				CEF9A1C81CECA08800A4800A /* sablier4.jpg */,
+				CEF9A1C11CEC91B000A4800A /* sablier3.gif */,
+				CEF9A1C61CEC9F2900A4800A /* stop.jpg */,
 				CEF10D471CE75D940075DE1E /* imgpersodefault.jpg */,
+				CEFC306B1CEE59F7007A6027 /* game over.jpg */,
 				CEF10D481CE75D940075DE1E /* tapis jeu.jpg */,
+				CEF9A1CA1CECAD2200A4800A /* btnajouter.png */,
+				CEF5AE931CEDED3500A91265 /* maxresdefault.jpg */,
+				CEF5AE8B1CEDE28700A91265 /* refresh.png */,
+				CEF5AE951CEDF08B00A91265 /* trophe.png */,
+				CEFC30651CEE56A9007A6027 /* attente.jpg */,
+				CEFC30691CEE59D0007A6027 /* Winning.png */,
 				CEF10D491CE75D940075DE1E /* trophee-de-la-coupe-silhouette_318-63600.jpeg */,
 			);
 			name = image;
@@ -286,6 +355,7 @@
 				TargetAttributes = {
 					CE4D0EE41CE620F10089C152 = {
 						CreatedOnToolsVersion = 7.3;
+						DevelopmentTeam = GATSAPR4U5;
 					};
 					CE4D0EF81CE620F10089C152 = {
 						CreatedOnToolsVersion = 7.3;
@@ -322,18 +392,33 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CEF9A1B41CEC511700A4800A /* sablier.jpeg in Resources */,
 				CE4D0EF31CE620F10089C152 /* LaunchScreen.storyboard in Resources */,
+				CEF9A1B81CEC7FE200A4800A /* main.jpeg in Resources */,
+				CEF5AE941CEDED3500A91265 /* maxresdefault.jpg in Resources */,
+				CEFC306A1CEE59D0007A6027 /* Winning.png in Resources */,
+				CEF9A1CB1CECAD2200A4800A /* btnajouter.png in Resources */,
 				CEFA1BAB1CE8D43A00BB952A /* carte verte.png in Resources */,
+				CEF9A1C21CEC91B000A4800A /* sablier2.gif in Resources */,
+				CEF5AE8A1CEDD20700A91265 /* uno-icone.png in Resources */,
 				CEFA1BAA1CE8D43A00BB952A /* carte uno.png in Resources */,
 				CEFA1BB01CE8DD3400BB952A /* cartes tas.png in Resources */,
 				CEFA1BA91CE8D43A00BB952A /* carte rouge.png in Resources */,
 				CEFA1BA71CE8D43A00BB952A /* carte bleu.png in Resources */,
+				CEF5AE8C1CEDE28700A91265 /* refresh.png in Resources */,
 				CEF10D4B1CE75D940075DE1E /* tapis jeu.jpg in Resources */,
 				CEF10D4A1CE75D940075DE1E /* imgpersodefault.jpg in Resources */,
+				CEF5AE961CEDF08B00A91265 /* trophe.png in Resources */,
 				CEFA1BA81CE8D43A00BB952A /* carte jaune.png in Resources */,
+				CEFC306C1CEE59F7007A6027 /* game over.jpg in Resources */,
 				CEF10D4C1CE75D940075DE1E /* trophee-de-la-coupe-silhouette_318-63600.jpeg in Resources */,
+				CEFC30661CEE56A9007A6027 /* attente.jpg in Resources */,
+				CEF9A1C91CECA08800A4800A /* sablier4.jpg in Resources */,
+				CEF9A1C71CEC9F2900A4800A /* stop.jpg in Resources */,
+				CEF9A1BF1CEC8CD100A4800A /* main3.png in Resources */,
 				CE4D0EF01CE620F10089C152 /* Assets.xcassets in Resources */,
 				CE4D0EEE1CE620F10089C152 /* Main.storyboard in Resources */,
+				CEF9A1C31CEC91B000A4800A /* sablier3.gif in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -358,13 +443,19 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				CE4D0EEB1CE620F10089C152 /* ViewController.swift in Sources */,
 				CEFA1BAE1CE8D8F300BB952A /* Cardcell.swift in Sources */,
+				CEF9A1C51CEC94B700A4800A /* UIImage+Gif.swift in Sources */,
 				CEF10D421CE759380075DE1E /* Toucan.swift in Sources */,
+				CEF5AE911CEDEC7400A91265 /* ViewInscription.swift in Sources */,
 				CEF66CF61CEB17B600B44E5A /* ListeTablesSubCell.swift in Sources */,
+				CEF5AE901CEDEC7400A91265 /* ViewController.swift in Sources */,
 				CEF66CF41CEB15BC00B44E5A /* ListeTableMainCell.swift in Sources */,
+				CEF9A1BD1CEC8A2F00A4800A /* HRToast+UIView.swift in Sources */,
+				CEF5AE921CEDEC7400A91265 /* ViewMeilleurScore.swift in Sources */,
+				CEF9A1B21CEC4D9B00A4800A /* SwiftSpinner.swift in Sources */,
 				CEF10D451CE759900075DE1E /* PlateauVC.swift in Sources */,
 				CEF10D411CE759380075DE1E /* SCLAlertView.swift in Sources */,
+				CEF9A1B01CEC499B00A4800A /* VariableGlobale.swift in Sources */,
 				CEF66CF21CEB016A00B44E5A /* TablesVC.swift in Sources */,
 				CE4D0EE91CE620F10089C152 /* AppDelegate.swift in Sources */,
 				CEFA1B9D1CE8CE3000BB952A /* ConstructCard.swift in Sources */,
@@ -459,7 +550,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -499,7 +590,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.3;
+				IPHONEOS_DEPLOYMENT_TARGET = 8.3;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -511,10 +602,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = UNO/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.APP4-Info-Polytech.UNO";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
 		};
@@ -522,10 +616,13 @@
 			isa = XCBuildConfiguration;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_IDENTITY = "iPhone Developer";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				INFOPLIST_FILE = UNO/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = "com.APP4-Info-Polytech.UNO";
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
 		};
