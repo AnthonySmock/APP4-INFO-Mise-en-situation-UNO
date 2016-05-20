@@ -8,6 +8,7 @@ body {
 }
 
 
+
 section{
 display:block; 
 border:solid 1px #FF9933; 
@@ -18,9 +19,9 @@ margin-bottom: 60px;
 box-shadow: 6px 6px 6px #FF9933; 
 background-image: url(../fond2.jpg);
 opacity: 0.8;
-
-
 }
+
+
 
 #resultat{
 margin-left: 50%;
@@ -30,6 +31,14 @@ width: 30%;
 #submit_choix_partie{
 	margin-left: 29%;
 	width: 21%;
+}
+
+#label_username{
+	margin-left: 52%;
+}
+
+#label_inscription{
+	margin-left: 53%;
 }
 
 
@@ -54,7 +63,18 @@ textarea {
 
 #infos_partie{
 	margin-left: 22%;
+}
 
+#pseudo_inscription{
+	margin-left: 52%;
+}
+
+#mdp_inscription{
+	margin-left: 49%;
+}
+
+#passverif_inscription{
+	margin-left: 47%;
 }
 
 
@@ -132,7 +152,6 @@ a{
 
 
 .foot{
-	width:120%;
 	margin-left:-15%;
 }
 
@@ -182,9 +201,7 @@ label
 }
 
 #create_partie{
-	margin-left:50%;
-
-
+	margin-left:35%;
 }
 
 

@@ -81,6 +81,10 @@ function pioche(num,coul)
 
 $(document).ready(function()
 {
+
+	console.log("gid" +sessionStorage.getItem("gid_partie"))
+	console.log("pid" +sessionStorage.getItem("pid_joueur"))
+
 	var names = [];
 	var json_obj;
 	$.ajax({
@@ -126,7 +130,7 @@ $(document).ready(function()
 });
 
 $(document).ready(function()
-{
+{   });
 
 	
 	$('#u4').click(function(e) {  

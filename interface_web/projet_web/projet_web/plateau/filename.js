@@ -3,22 +3,26 @@ var count=40;
 var counter=setInterval(timer, 1000); //1000 will  run it every 1 second
 var notre_tour=0;
 var action = 0;
-var pid,gid;
+var pid=0,gid=0;
 var change = 0;
 
 function timer()
 {
+	gid = parseInt(sessionStorage.getItem("gid_partie"));
+  pid = parseInt(sessionStorage.getItem("pid_joueur"));
   count=count-1;
   //alert(document.getElementById('span_gid').value);
 	$.ajax({
 		url: 'http://dev.asmock.com/api/state',
 		dataType: "json",
 		type: "POST", 
-		data: JSON.stringify({ "pid": parseInt(sessionStorage.getItem("gid_partie")), "gid":parseInt(sessionStorage.getItem("pid_joueur")) }),
+		data: JSON.stringify({ "pid": pid, "gid":gid }),
 		success: function(data)
 		{
 			//alert(JSON.stringify(data));
 			//alert(data.isYourTurn);
+
+
 			if(data.isYourTurn == false)
 			{
 				change = 0;
@@ -38,13 +42,28 @@ function timer()
 				}
 				//count = 30;
 			}
-			document.getElementById("n1").innerHTML = data.othersNumberOfCards["1"]["username"];
-			document.getElementById("n2").innerHTML = data.othersNumberOfCards["2"]["username"];
-			document.getElementById("n3").innerHTML = data.othersNumberOfCards["3"]["username"];
-			
+
+						if (typeof(data.othersNumberOfCards["1"]) != "undefined")
+			{
+			//code for what to do with json here
+						document.getElementById("n1").innerHTML = data.othersNumberOfCards["1"]["username"];
 			document.getElementById("nb1").innerHTML = data.othersNumberOfCards["1"]["numberOfCards"];
+			}
+
+						if (typeof(data.othersNumberOfCards["2"]) != "undefined")
+			{
+			//code for what to do with json here
+						document.getElementById("n2").innerHTML = data.othersNumberOfCards["2"]["username"];
 			document.getElementById("nb2").innerHTML = data.othersNumberOfCards["2"]["numberOfCards"];
+			}
+
+			if (typeof(data.othersNumberOfCards["3"]) != "undefined")
+			{
+			//code for what to do with json here
+						document.getElementById("n3").innerHTML = data.othersNumberOfCards["3"]["username"];
 			document.getElementById("nb3").innerHTML = data.othersNumberOfCards["3"]["numberOfCards"];
+			}
+			
 			
 			names = [];
 			for(var i=0; i<data.yourCards.length; i++)
@@ -59,13 +78,18 @@ function timer()
 			new_span2 = document.createElement("span");
 			
 			var texte = "card num-"+data.upperCard["number"]+" "+data.upperCard["color"]; //"card num-6 red"
+			
+			if (typeof(data.upperCard["number"] != "undefined"))
+			{
 			$(existing_div1).empty();
+
 			$(new_div1).addClass(texte);$(new_span1).addClass('inner');$(new_span2).addClass('mark').html(data.upperCard["number"]);
 			$(new_span1).append($(new_span2));$(new_div1).append($(new_span1));$(existing_div1).append($(new_div1));
+			}
 		},
 		error:function(request)
 		 {          
-			//alert(request.responseText);
+			alert(request.responseText);
 		 }
 	});
   
@@ -219,7 +243,7 @@ function pioche() //draw
 	},
 	error:function(request)
 	 {          
-		//alert(request.responseText);
+		alert(request.responseText);
 	 }
 	});
 	
@@ -232,9 +256,9 @@ function pioche() //draw
 
 $(document).ready(function()
 {
-	pid = parseInt(sessionStorage.getItem("gid_partie"));
-  gid = parseInt(sessionStorage.getItem("pid_joueur"));
-  console.log("gid:"+gid);console.log("pid:"+pid);
+	gid = parseInt(sessionStorage.getItem("gid_partie"));
+  pid = parseInt(sessionStorage.getItem("pid_joueur"));
+  console.log(gid);console.log(pid);
 	//console.log("coucou");
 
 	var json_obj;

@@ -21,7 +21,7 @@ $(document).ready(function(){
                         console.log(data[0]["pid"])
                         sessionStorage.setItem("pid_joueur",data[0]["pid"]);
                         alert("Connexion reussie !")          
-                        document.location.href="index.html"
+                        document.location.href="home.html"
 
                     	},
                     	error:function()
@@ -56,10 +56,11 @@ $(document).ready(function(){
                       	{
                           alert("Inscription reussie !")
                           console.log(data.username)
-                          document.location.href="index.html"
+                          document.location.href="home.html"
                       	},
                       	error:function()
-                      	 {          
+                      	 {        
+                            alert("Erreur, ressayez !")  
                       	 }
           	   });
           }
@@ -85,7 +86,6 @@ $(document).ready(function(){
             error:function()
             {          
             }
-
             });
 
 
@@ -136,39 +136,17 @@ $(document).ready(function(){
 
 
 
-    var $pid = 0;
-
-
-      $.ajax({
-      url: 'http://dev.asmock.com/api/profil',
-      dataType: "json",
-      type: "post",
-      data : JSON.stringify({ "pid" : $pid }),
-        success: function(data)
-        {
-          document.getElementById('game_won').innerHTML = data.gameWon
-          document.getElementById('game_played').innerHTML = data.gameWon
-        },
-          error:function()
-          {          
-              
-          }
-      });
-
-
-
 //creation partie
 
    $("#create_partie").click(function(){
-     // location.replace("inscription.html");  
-         
+
    console.log("hey");
 
 
      var $password =        String($('#password_partie').val());
      var $gamename =        String($('#nom_partie').val());
      var $nombre_joueurs =  String($('#nombre_joueurs').val());
-     var $pid =             String(sessionStorage.getItem("pid_joueur"));// String($('#password_inscription').val());
+     var $pid =             String(sessionStorage.getItem("pid_joueur"));
 
       $.ajax({
       url: 'http://dev.asmock.com/api/game',
@@ -177,17 +155,41 @@ $(document).ready(function(){
       data : JSON.stringify({ "pid" : $pid, "gameName" : $gamename,  "gamePassword" : $password,  "maxPlayer" : $nombre_joueurs  }),
         success: function(data)
         {
-        alert(' Votre partie a bien été crée ! :-) ')
-
+          alert(' Votre partie a bien été crée ! :-) ')
+          console.log("data"+ data.gid)
+           sessionStorage.setItem("gid_partie",data.gid);
+          document.location.href="plateau/index.html"
         },
           error:function()
-          {          
+          {        
+           alert(' Erreur, ressayez ! ')  
           }
       });
     });
 
 
 
+
+   $("#create_partie").click(function(){
+
+          var $pid      = String(sessionStorage.getItem("pid_joueur"));
+       
+          $.ajax({
+          url: 'http://dev.asmock.com/api/profil',
+          dataType: "json",
+          type: "post",
+          data : JSON.stringify({ "pid" : $pid }),
+            success: function(data)
+            {
+              document.getElementById('game_won').innerHTML = data.gameWon
+              document.getElementById('game_played').innerHTML = data.gameWon
+            },
+              error:function()
+              {          
+                  
+              }
+          });
+   });
 
 
 
